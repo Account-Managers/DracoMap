@@ -5,7 +5,7 @@
 ![alt text][1.1] <strong><em>`The contents of this repo are a proof of concept and are for educational use only`</em></strong>![alt text][1.1]<br/>
 
 ### DracoMap - Crowdsourced DraconiusGo map.
-Demo map: (spots only remain 15 minutes) <a href="http://webpokemon.net/DracoMap/">here</a>
+Demo map: (spots only remain 15 minutes) <a href="https://webpokemon.net/DracoMap/">here</a>
 
 #### Requirements
 
