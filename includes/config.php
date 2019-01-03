@@ -9,9 +9,9 @@ $config['mapCenter'] = "40.764665, -73.973184";
 
 // CONFIG YOUR DATABASE
 $config['mysql_host'] = "localhost";
-$config['mysql_root'] = "cabrao";
-$config['mysql_password'] = "cabrao";
-$config['mysql_database'] = "ovb";
+$config['mysql_root'] = "root";
+$config['mysql_password'] = "";
+$config['mysql_database'] = "draco";
 
 // EXTERNE CONFIG (IF PROBLEM)
 $config['fontAwesomeStyle'] = "https://use.fontawesome.com/releases/v5.2.0/css/all.css";
