@@ -65,7 +65,7 @@ CREATE TABLE `pokedex` (
 --
 
 INSERT INTO `pokedex` (`id`, `monster`) VALUES
-('CHEST', 'Chest');
+('CHEST', 'Chest'),
 ('MONSTER_WATER_1', 'Frogus'),
 ('MONSTER_WATER_2', 'Dribble'),
 ('MONSTER_WATER_3', 'Spiritus'),
