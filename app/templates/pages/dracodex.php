@@ -6,7 +6,7 @@ require_once("../../../includes/config.php");
 
 <div class="list_items">
 <?php
-$DracoDex = $db->getQuery('SELECT * FROM pokedex ORDER BY id DESC');
+$DracoDex = $db->getQuery('SELECT * FROM pokedex ORDER BY gid ASC');
 foreach ($DracoDex as $DracoDexItem) {
 	if($DracoDexItem["monster"] == "Chest")
 		continue;
