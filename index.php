@@ -20,7 +20,7 @@ if(isset($_SESSION['login'])) {
 	
 	<body>
 		<header>
-			<div class="logo"><a href="#"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/logo.png"></a></div>
+			<div class="logo"><a href="./"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/logo.png"></a></div>
 			
 			<ul class="menu">
 				<li><a href="#" class="active" id="mapButton"><i class="fas fa-map-pin"></i> Map</a></li>
