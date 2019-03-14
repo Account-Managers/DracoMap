@@ -84,6 +84,9 @@ if(isset($_SESSION['login'])) {
 				
 				<input type="checkbox" id="toggle_building" checked>
 				<label for="toggle_building">Buildings</label>
+				
+				<input type="checkbox" id="toggle_library" checked>
+				<label for="toggle_library">Librarys</label>
 			</div>
 		</div>
 		

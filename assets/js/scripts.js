@@ -403,7 +403,7 @@ $("#overlay .close").click(function () {
 	$('#overlay').fadeOut('slow');
 });
 
-$("#map_container #toggle_creatures, #map_container #toggle_gyms, #map_container #toggle_building").click(function () {
+$("#map_container #toggle_creatures, #map_container #toggle_gyms, #map_container #toggle_building, #map_container #toggle_library").click(function () {
 	refreshMarkers();
 });
 

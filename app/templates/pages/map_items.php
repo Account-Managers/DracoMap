@@ -31,6 +31,11 @@ function AddMarkerToMap(className, icon_url, icon_size, lat, long, message)
 	{
 		map.removeLayer(marker);
 	}
+	
+	if(!$("#map_container #toggle_library").prop("checked") && className == "library")
+	{
+		map.removeLayer(marker);
+	}
 }
 
 // CREATURES
@@ -74,10 +79,18 @@ foreach ($Stops as $StopsRow) {
 		$size = 25;
 	
 	if($StopsRow["type"] == "LIBRARY")
+	{
 		$StopsRow["type"] = "1";
+?>
+AddMarkerToMap("library", "<?php echo $config['websiteAssetsUrl']; ?>/images/stops/<?php echo $StopsRow["type"]; ?>.png", <?php echo $size; ?>, "<?php echo $StopsRow["slatitude"]; ?>", "<?php echo $StopsRow["slongitude"]; ?>", '<center style="width: 180px;"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/stops/<?php echo $StopsRow["type"]; ?>.png" width="75"><hr/><b><?php echo $StopsRow["sname"]; ?></b><hr/>Founded the : <b><?php echo date('d/m/Y', strtotime($StopsRow["date"])); ?></b><br/>at : <b><?php echo date('h:iA', strtotime($StopsRow["date"])); ?></b><br/>by : <b><?php echo $StopsRow["questby"]; ?></b></center>');
+<?php
+	}
+	else
+	{
 ?>
 AddMarkerToMap("stops", "<?php echo $config['websiteAssetsUrl']; ?>/images/stops/<?php echo $StopsRow["type"]; ?>.png", <?php echo $size; ?>, "<?php echo $StopsRow["slatitude"]; ?>", "<?php echo $StopsRow["slongitude"]; ?>", '<center style="width: 180px;"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/stops/<?php echo $StopsRow["type"]; ?>.png" width="75"><hr/><b><?php echo $StopsRow["sname"]; ?></b><hr/>Founded the : <b><?php echo date('d/m/Y', strtotime($StopsRow["date"])); ?></b><br/>at : <b><?php echo date('h:iA', strtotime($StopsRow["date"])); ?></b><br/>by : <b><?php echo $StopsRow["questby"]; ?></b></center>');
 <?php
+	}
 }
 ?>
 </script>
