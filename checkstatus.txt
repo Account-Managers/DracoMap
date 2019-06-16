@@ -1,2 +1,0 @@
-BotStatus=ENABLED;
-MinVersion=3.4.1.6;
