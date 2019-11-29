@@ -83,7 +83,7 @@ if(isset($_SESSION['login'])) {
 				<label for="toggle_gyms">Arenas</label>
 				
 				<input type="checkbox" id="toggle_building" checked>
-				<label for="toggle_building">Stops</label>
+				<label for="toggle_building">Buildings</label>
 				
 				<input type="checkbox" id="toggle_library" checked>
 				<label for="toggle_library">Librarys</label>
