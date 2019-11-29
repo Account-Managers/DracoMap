@@ -269,12 +269,12 @@ $(document).delegate('#cleanGymButton', 'click', function(e){
 	});
 });
 
-$(document).delegate('#cleanBuildingButton', 'click', function(e){
+$(document).delegate('#cleanBuildingsButton', 'click', function(e){
 	e.preventDefault();
     $.ajax({
 		type: "POST",
 		name: "login",
-		url: 'app/form/clean.php?type=building',
+		url: 'app/form/clean.php?type=buildings',
         success: function(data)
         {
 			var eventData = data.split(';');

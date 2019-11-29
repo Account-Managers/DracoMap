@@ -21,8 +21,8 @@ $countCreature = $db->getQuery('SELECT COUNT(*) AS count_row FROM spots');
 <h1>Librarys (<?php echo $countLib[0]["count_row"]; ?>)</h1>
 <input type="submit" id="cleanLibButton" value="Clean librarys">
 
-<h1>Stops (<?php echo $countStops[0]["count_row"]; ?>)</h1>
-<input type="submit" id="cleanBuildingButton" value="Clean buildings">
+<h1>Buildings (<?php echo $countStops[0]["count_row"]; ?>)</h1>
+<input type="submit" id="cleanBuildingsButton" value="Clean buildings">
 
 <h1>Creatures (<?php echo $countCreature[0]["count_row"]; ?>)</h1>
 <input type="submit" id="cleanCreatureLogs" value="Clean creatures">

@@ -22,7 +22,7 @@ else if(isset($_GET["type"]) && $_GET["type"] == "libs")
 	echo "success;Librarys have been deleted";
 	return;
 }
-else if(isset($_GET["type"]) && $_GET["type"] == "building")
+else if(isset($_GET["type"]) && $_GET["type"] == "buildings")
 {
 	$db->executeQuery('TRUNCATE TABLE stops');
 	echo "success;Buildings have been deleted";
