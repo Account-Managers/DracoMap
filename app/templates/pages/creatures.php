@@ -8,10 +8,10 @@ require_once("../../../includes/config.php");
 <?php
 $Creatures = $db->getQuery('SELECT * FROM spots ORDER BY iv DESC');
 foreach ($Creatures as $CreatureRow) {
-	if($CreatureRow["pokemon"] == null || $CreatureRow["pokemon"] == "")
+	if($CreatureRow["creature"] == null || $CreatureRow["creature"] == "")
 		continue;
 	
-	$infoCreatureRow = $db->getQuery('SELECT * FROM pokedex WHERE id = ? LIMIT 1', array($CreatureRow["pokemon"]));
+	$infoCreatureRow = $db->getQuery('SELECT * FROM bestiary WHERE id = ? LIMIT 1', array($CreatureRow["creature"]));
 ?>
 	<div class="row" onclick="getCapturedPoke('<?php echo $CreatureRow["latitude"]; ?>', '<?php echo $CreatureRow["longitude"]; ?>')">
 		<div class="image"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/icons/<?php echo $infoCreatureRow[0]["id"]; ?>.png"></div>

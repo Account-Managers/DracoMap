@@ -24,7 +24,7 @@ if(isset($_SESSION['login'])) {
 			
 			<ul class="menu">
 				<li><a href="#" class="active" id="mapButton"><i class="fas fa-map-pin"></i> Map</a></li>
-				<li><a href="pages/dracodex"><i class="fas fa-search"></i> DracoDex</a></li>
+				<li><a href="pages/bestiary"><i class="fas fa-search"></i> Bestiary</a></li>
 				<li><a href="pages/creatures"><i class="far fa-hand-rock"></i> Creatures</a></li>
 			</ul>
 			
@@ -80,10 +80,10 @@ if(isset($_SESSION['login'])) {
 				<label for="toggle_creatures">Creatures</label>
 				
 				<input type="checkbox" id="toggle_gyms" checked>
-				<label for="toggle_gyms">Gyms</label>
+				<label for="toggle_gyms">Arenas</label>
 				
 				<input type="checkbox" id="toggle_building" checked>
-				<label for="toggle_building">Buildings</label>
+				<label for="toggle_building">Stops</label>
 				
 				<input type="checkbox" id="toggle_library" checked>
 				<label for="toggle_library">Librarys</label>

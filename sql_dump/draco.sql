@@ -52,20 +52,47 @@ CREATE TABLE `gyms` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `pokedex`
+-- Structure de la table `libs`
 --
 
-CREATE TABLE `pokedex` (
+CREATE TABLE `libs` (
+  `gid` int(6) UNSIGNED NOT NULL,
+  `gname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `glatitude` decimal(10,6) NOT NULL,
+  `glongitude` decimal(10,6) NOT NULL,
+  `gteam` int(2) NOT NULL,
+  `actraid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `actboss` int(3) DEFAULT NULL,
+  `hour` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
+  `min` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
+  `ampm` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
+  `egg` int(1) NOT NULL,
+  `type` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
+  `eggby` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `teamby` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `raidby` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `exraid` int(1) NOT NULL,
+  `exraiddate` datetime DEFAULT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `bestiary`
+--
+
+CREATE TABLE `bestiary` (
   `gid` int(6) UNSIGNED NOT NULL,
   `id` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   `monster` varchar(25) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Déchargement des données de la table `pokedex`
+-- Déchargement des données de la table `bestiary`
 --
 
-INSERT INTO `pokedex` (`gid`, `id`, `monster`) VALUES
+INSERT INTO `bestiary` (`gid`, `id`, `monster`) VALUES
 (1, 'MONSTER_WATER_1', 'Frogus'),
 (2, 'MONSTER_WATER_5', 'Frogissimo'),
 (3, 'MONSTER_EARTH_1', 'Berrydillo'),
@@ -308,9 +335,8 @@ INSERT INTO `pokedex` (`gid`, `id`, `monster`) VALUES
 (240, 'MONSTER_EARTH_SPR_2', 'Dandeliosaur'),
 (241, 'MONSTER_WATER_25', 'Leviathan'),
 (242, 'MONSTER_FIRE_SPR_1', 'Kitsun'),
-(243, 'MONSTER_FIRE_SPR_2', 'Nogitsun'),
-(244, 'MONSTER_EARTH_VIRAL', 'Kingpeat'),
-(245, 'CHEST', 'Chest');
+(243, 'MONSTER_EARTH_VIRAL', 'Kingpeat'),
+(244, 'CHEST', 'Chest');
 
 -- --------------------------------------------------------
 
@@ -320,7 +346,7 @@ INSERT INTO `pokedex` (`gid`, `id`, `monster`) VALUES
 
 CREATE TABLE `spots` (
   `spotid` int(6) UNSIGNED NOT NULL,
-  `pokemon` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `creature` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `cp` int(6) NOT NULL,
   `iv` int(3) NOT NULL,
   `hour` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
@@ -450,11 +476,20 @@ ALTER TABLE `gyms`
   ADD UNIQUE KEY `gname` (`gname`),
   ADD UNIQUE KEY `glatitude` (`glatitude`),
   ADD UNIQUE KEY `glongitude` (`glongitude`);
+  
+--
+-- Index pour la table `libs`
+--
+ALTER TABLE `libs`
+  ADD PRIMARY KEY (`gid`),
+  ADD UNIQUE KEY `gname` (`gname`),
+  ADD UNIQUE KEY `glatitude` (`glatitude`),
+  ADD UNIQUE KEY `glongitude` (`glongitude`);
 
 --
--- Index pour la table `pokedex`
+-- Index pour la table `bestiary`
 --
-ALTER TABLE `pokedex`
+ALTER TABLE `bestiary`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -504,6 +539,12 @@ ALTER TABLE `user_like`
 -- AUTO_INCREMENT pour la table `gyms`
 --
 ALTER TABLE `gyms`
+  MODIFY `gid` int(6) UNSIGNED NOT NULL AUTO_INCREMENT;
+  
+--
+-- AUTO_INCREMENT pour la table `libs`
+--
+ALTER TABLE `libs`
   MODIFY `gid` int(6) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --

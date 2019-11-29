@@ -220,6 +220,31 @@ $(document).delegate('#registerForm', 'submit', function(e){
 	});
 });
 
+
+$(document).delegate('#cleanLibButton', 'click', function(e){
+	e.preventDefault();
+    $.ajax({
+		type: "POST",
+		name: "login",
+		url: 'app/form/clean.php?type=libs',
+        success: function(data)
+        {
+			var eventData = data.split(';');
+			var eventName = jQuery.trim(eventData[0]);
+			var msg = eventData[1];
+			if(eventName == "error") {
+				showAlert(msg, "error");
+			}
+			else if(eventName == "success") 
+			{
+				$('#overlay .overlay_content').load("app/templates/overlay/admin_settings.php");
+				refreshMarkers();
+				showAlert(msg, "success");
+			}
+        }
+	});
+});
+
 $(document).delegate('#cleanGymButton', 'click', function(e){
 	e.preventDefault();
     $.ajax({
@@ -236,8 +261,8 @@ $(document).delegate('#cleanGymButton', 'click', function(e){
 			}
 			else if(eventName == "success") 
 			{
+				$('#overlay .overlay_content').load("app/templates/overlay/admin_settings.php");
 				refreshMarkers();
-				$('#overlay').fadeOut('slow');
 				showAlert(msg, "success");
 			}
         }
@@ -260,8 +285,8 @@ $(document).delegate('#cleanBuildingButton', 'click', function(e){
 			}
 			else if(eventName == "success") 
 			{
+				$('#overlay .overlay_content').load("app/templates/overlay/admin_settings.php");
 				refreshMarkers();
-				$('#overlay').fadeOut('slow');
 				showAlert(msg, "success");
 			}
         }
@@ -284,8 +309,8 @@ $(document).delegate('#cleanCreatureLogs', 'click', function(e){
 			}
 			else if(eventName == "success") 
 			{
+				$('#overlay .overlay_content').load("app/templates/overlay/admin_settings.php");
 				refreshMarkers();
-				$('#overlay').fadeOut('slow');
 				showAlert(msg, "success");
 			}
         }
@@ -308,8 +333,8 @@ $(document).delegate('#dropDatabaseButton', 'click', function(e){
 			}
 			else if(eventName == "success") 
 			{
+				$('#overlay .overlay_content').load("app/templates/overlay/admin_settings.php");
 				refreshMarkers();
-				$('#overlay').fadeOut('slow');
 				showAlert(msg, "success");
 			}
         }

@@ -4,7 +4,7 @@ require_once("../../../includes/config.php");
 session_start();
 ?>
 <script>
-function AddMarkerToMap(className, icon_url, icon_size, lat, long, message)
+function AddMarkerToMap(category, icon_url, icon_size, lat, long, message)
 {
 	var image = new L.Icon({
 		iconUrl: icon_url,
@@ -15,24 +15,24 @@ function AddMarkerToMap(className, icon_url, icon_size, lat, long, message)
 		icon: image
 	}).bindPopup(message);
 	map.addLayer(marker);
-	marker._icon.classList.add(className);
+	marker._icon.classList.add(category);
 	
-	if(!$("#map_container #toggle_creatures").prop("checked") && className == "creatures")
+	if(!$("#map_container #toggle_creatures").prop("checked") && category == "creatures")
 	{
 		map.removeLayer(marker);
 	}
 	
-	if(!$("#map_container #toggle_gyms").prop("checked") && className == "gym")
+	if(!$("#map_container #toggle_gyms").prop("checked") && category == "gym")
 	{
 		map.removeLayer(marker);
 	}
 	
-	if(!$("#map_container #toggle_building").prop("checked") && className == "stops")
+	if(!$("#map_container #toggle_building").prop("checked") && category == "stops")
 	{
 		map.removeLayer(marker);
 	}
 	
-	if(!$("#map_container #toggle_library").prop("checked") && className == "library")
+	if(!$("#map_container #toggle_library").prop("checked") && category == "library")
 	{
 		map.removeLayer(marker);
 	}
@@ -42,10 +42,10 @@ function AddMarkerToMap(className, icon_url, icon_size, lat, long, message)
 <?php
 $Creatures = $db->getQuery('SELECT * FROM spots');
 foreach ($Creatures as $CreatureRow) {
-	if($CreatureRow["pokemon"] == null || $CreatureRow["pokemon"] == "")
+	if($CreatureRow["creature"] == null || $CreatureRow["creature"] == "")
 		continue;
 	
-	$infoCreatureRow = $db->getQuery('SELECT * FROM pokedex WHERE id = ? LIMIT 1', array($CreatureRow["pokemon"]));
+	$infoCreatureRow = $db->getQuery('SELECT * FROM bestiary WHERE id = ? LIMIT 1', array($CreatureRow["creature"]));
 ?>
 AddMarkerToMap("creatures", "<?php echo $config['websiteAssetsUrl']; ?>/images/icons/<?php echo $infoCreatureRow[0]["id"]; ?>.png", "45", "<?php echo $CreatureRow["latitude"]; ?>", "<?php echo $CreatureRow["longitude"]; ?>", '<center style="width: 180px"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/icons/<?php echo $infoCreatureRow[0]["id"]; ?>.png" width="75"><hr/><b><?php echo $infoCreatureRow[0]["monster"]; ?></b><br/>CP : <b><?php echo $CreatureRow["cp"]; ?></b><br />IV : <b><?php echo $CreatureRow["iv"]; ?></b>%<br /><hr/>Founded the : <b><?php echo date('d/m/Y', strtotime($CreatureRow["date"])); ?></b><br/>at : <b><?php echo date('h:iA', strtotime($CreatureRow["date"])); ?></b><br/>by : <b><?php echo $CreatureRow["spotter"]; ?></b><hr/>Latitude : <b><?php echo $CreatureRow["latitude"]; ?></b><br/>Longitude : <b><?php echo $CreatureRow["longitude"]; ?></b><br/><a href="https://www.google.com/maps/?daddr=<?php echo $CreatureRow["latitude"]; ?>,<?php echo $CreatureRow["longitude"]; ?>" target="_blank">Google Map</a><?php if(isset($_SESSION['login'])) { ?><hr/><div class="like_count <?php if($CreatureRow["good"] != 0 && $CreatureRow["good"] > 0) { echo "like"; } else if($CreatureRow["good"] != 0 && $CreatureRow["good"] < 0) { echo "unlike"; } ?>"><i class="fas fa-thumbs-up like_button" id="<?php echo $CreatureRow["spotid"]; ?>"></i> <?php echo $CreatureRow["good"]; ?> <i class="far fa-thumbs-down unlike_button" id="<?php echo $CreatureRow["spotid"]; ?>"></i></div><?php } ?></center>');
 <?php
@@ -66,6 +66,20 @@ AddMarkerToMap("gym", "<?php echo $config['websiteAssetsUrl']; ?>/images/gyms/<?
 }
 ?>
 
+// LIBS
+<?php
+$Libs = $db->getQuery('SELECT * FROM libs');
+foreach ($Libs as $LibsRow) {
+	if($LibsRow["gteam"] != "1" && $LibsRow["gteam"] != "2" && $LibsRow["gteam"] != "3")
+		continue;
+	
+	$teamInfo = $db->getQuery('SELECT * FROM teams WHERE tid = ? LIMIT 1', array($LibsRow["gteam"]));
+?>
+AddMarkerToMap("library", "<?php echo $config['websiteAssetsUrl']; ?>/images/stops/<?php echo $LibsRow["gteam"]; ?>.png", "50", "<?php echo $LibsRow["glatitude"]; ?>", "<?php echo $LibsRow["glongitude"]; ?>", '<center style="width: 180px;"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/stops/<?php echo $LibsRow["gteam"]; ?>.png" width="75"><hr/><b><?php echo $LibsRow["gname"]; ?></b><br/><hr />Team : <b><?php echo $teamInfo[0]["tname"]; ?></b></center>');
+<?php
+}
+?>
+
 // STOPS
 <?php
 $Stops = $db->getQuery('SELECT * FROM stops');
@@ -77,20 +91,11 @@ foreach ($Stops as $StopsRow) {
 	
 	if($StopsRow["type"] == "DUNGEON_STOP")
 		$size = 25;
-	
-	if($StopsRow["type"] == "LIBRARY")
-	{
-		$StopsRow["type"] = "1";
-?>
-AddMarkerToMap("library", "<?php echo $config['websiteAssetsUrl']; ?>/images/stops/<?php echo $StopsRow["type"]; ?>.png", <?php echo $size; ?>, "<?php echo $StopsRow["slatitude"]; ?>", "<?php echo $StopsRow["slongitude"]; ?>", '<center style="width: 180px;"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/stops/<?php echo $StopsRow["type"]; ?>.png" width="75"><hr/><b><?php echo $StopsRow["sname"]; ?></b><hr/>Founded the : <b><?php echo date('d/m/Y', strtotime($StopsRow["date"])); ?></b><br/>at : <b><?php echo date('h:iA', strtotime($StopsRow["date"])); ?></b><br/>by : <b><?php echo $StopsRow["questby"]; ?></b></center>');
-<?php
-	}
-	else
-	{
+
+
 ?>
 AddMarkerToMap("stops", "<?php echo $config['websiteAssetsUrl']; ?>/images/stops/<?php echo $StopsRow["type"]; ?>.png", <?php echo $size; ?>, "<?php echo $StopsRow["slatitude"]; ?>", "<?php echo $StopsRow["slongitude"]; ?>", '<center style="width: 180px;"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/stops/<?php echo $StopsRow["type"]; ?>.png" width="75"><hr/><b><?php echo $StopsRow["sname"]; ?></b><hr/>Founded the : <b><?php echo date('d/m/Y', strtotime($StopsRow["date"])); ?></b><br/>at : <b><?php echo date('h:iA', strtotime($StopsRow["date"])); ?></b><br/>by : <b><?php echo $StopsRow["questby"]; ?></b></center>');
 <?php
-	}
 }
 ?>
 </script>
