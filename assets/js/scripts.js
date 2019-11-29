@@ -446,7 +446,7 @@ $("header .user .username").click(function () {
 	}
 });
 
-function getCapturedPoke(long, latitude) {
+function getCapturedCreature(long, latitude) {
 	$('#global').hide();
 	$('#map_container').fadeIn('slow');
 	$("header .menu li a").removeClass("active");

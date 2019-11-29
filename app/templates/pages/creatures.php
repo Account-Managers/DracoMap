@@ -13,7 +13,7 @@ foreach ($Creatures as $CreatureRow) {
 	
 	$infoCreatureRow = $db->getQuery('SELECT * FROM bestiary WHERE id = ? LIMIT 1', array($CreatureRow["creature"]));
 ?>
-	<div class="row" onclick="getCapturedPoke('<?php echo $CreatureRow["latitude"]; ?>', '<?php echo $CreatureRow["longitude"]; ?>')">
+	<div class="row" onclick="getCapturedCreature('<?php echo $CreatureRow["latitude"]; ?>', '<?php echo $CreatureRow["longitude"]; ?>')">
 		<div class="image"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/icons/<?php echo $infoCreatureRow[0]["id"]; ?>.png"></div>
 		<div class="name"><span class="id">#<?php echo $CreatureRow["spotid"]; ?></span> <?php echo $infoCreatureRow[0]["monster"]; ?></div>
 		<div class="stats">
