@@ -25,7 +25,7 @@ else if(isset($_GET["type"]) && $_GET["type"] == "libs")
 else if(isset($_GET["type"]) && $_GET["type"] == "buildings")
 {
 	$db->executeQuery('TRUNCATE TABLE stops');
-	echo "success;Buildings have been deleted";
+	echo "success;All others have been deleted";
 	return;
 }
 else if(isset($_GET["type"]) && $_GET["type"] == "creatures")
