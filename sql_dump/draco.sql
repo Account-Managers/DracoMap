@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  sam. 30 nov. 2019 à 05:07
+-- Généré le :  sam. 30 nov. 2019 à 05:58
 -- Version du serveur :  10.1.38-MariaDB
 -- Version de PHP :  7.3.2
 
@@ -296,9 +296,6 @@ CREATE TABLE `gyms` (
   `glatitude` decimal(10,6) NOT NULL,
   `glongitude` decimal(10,6) NOT NULL,
   `gteam` int(2) NOT NULL,
-  `hour` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
-  `min` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
-  `ampm` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
   `type` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -315,9 +312,6 @@ CREATE TABLE `libs` (
   `glatitude` decimal(10,6) NOT NULL,
   `glongitude` decimal(10,6) NOT NULL,
   `gteam` int(2) NOT NULL,
-  `hour` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
-  `min` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
-  `ampm` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
   `type` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -333,9 +327,6 @@ CREATE TABLE `spots` (
   `creature` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `cp` int(6) NOT NULL,
   `iv` int(3) NOT NULL,
-  `hour` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
-  `min` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
-  `ampm` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
   `latitude` decimal(10,6) NOT NULL,
   `longitude` decimal(10,6) NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -355,9 +346,6 @@ CREATE TABLE `stops` (
   `sname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `slatitude` decimal(10,6) NOT NULL,
   `slongitude` decimal(10,6) NOT NULL,
-  `hour` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
-  `min` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
-  `ampm` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
   `type` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   `questby` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
