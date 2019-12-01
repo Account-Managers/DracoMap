@@ -428,7 +428,7 @@ $("#overlay .close").click(function () {
 	$('#overlay').fadeOut('slow');
 });
 
-$("#map_container #toggle_creatures, #map_container #toggle_gyms, #map_container #toggle_building, #map_container #toggle_library").click(function () {
+$("#map_container #toggle_creatures, #map_container #toggle_gyms, #map_container #toggle_building, #map_container #toggle_library, #map_container #toggle_players").click(function () {
 	refreshMarkers();
 });
 

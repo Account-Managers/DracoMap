@@ -27,6 +27,11 @@ function AddMarkerToMap(category, icon_url, icon_size, lat, long, message)
 		map.removeLayer(marker);
 	}
 	
+	if(!$("#map_container #toggle_players").prop("checked") && category == "players")
+	{
+		map.removeLayer(marker);
+	}
+	
 	if(!$("#map_container #toggle_building").prop("checked") && category == "stops")
 	{
 		map.removeLayer(marker);

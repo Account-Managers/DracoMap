@@ -76,6 +76,9 @@ if(isset($_SESSION['login'])) {
 			</div>
 			
 			<div class="items_toggles">
+				<input type="checkbox" id="toggle_players" checked>
+				<label for="toggle_players">Players</label>
+				
 				<input type="checkbox" id="toggle_creatures" checked>
 				<label for="toggle_creatures">Creatures</label>
 				
