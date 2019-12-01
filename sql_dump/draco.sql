@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  sam. 30 nov. 2019 à 05:58
+-- Généré le :  Dim 01 déc. 2019 à 19:13
 -- Version du serveur :  10.1.38-MariaDB
 -- Version de PHP :  7.3.2
 
@@ -291,11 +291,11 @@ INSERT INTO `bestiary` (`gid`, `id`, `monster`) VALUES
 --
 
 CREATE TABLE `gyms` (
-  `gid` int(6) UNSIGNED NOT NULL,
-  `gname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `glatitude` decimal(10,6) NOT NULL,
-  `glongitude` decimal(10,6) NOT NULL,
-  `gteam` int(2) NOT NULL,
+  `id` int(6) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `latitude` decimal(10,6) NOT NULL,
+  `longitude` decimal(10,6) NOT NULL,
+  `team` int(2) NOT NULL,
   `type` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -307,13 +307,26 @@ CREATE TABLE `gyms` (
 --
 
 CREATE TABLE `libs` (
-  `gid` int(6) UNSIGNED NOT NULL,
-  `gname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `glatitude` decimal(10,6) NOT NULL,
-  `glongitude` decimal(10,6) NOT NULL,
-  `gteam` int(2) NOT NULL,
+  `id` int(6) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `latitude` decimal(10,6) NOT NULL,
+  `longitude` decimal(10,6) NOT NULL,
+  `team` int(2) NOT NULL,
   `type` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `players`
+--
+
+CREATE TABLE `players` (
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `latitude` decimal(10,6) NOT NULL,
+  `longitude` decimal(10,6) NOT NULL,
+  `team` varchar(50) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -342,10 +355,10 @@ CREATE TABLE `spots` (
 --
 
 CREATE TABLE `stops` (
-  `sid` int(6) UNSIGNED NOT NULL,
-  `sname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `slatitude` decimal(10,6) NOT NULL,
-  `slongitude` decimal(10,6) NOT NULL,
+  `id` int(6) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `latitude` decimal(10,6) NOT NULL,
+  `longitude` decimal(10,6) NOT NULL,
   `type` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   `questby` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -358,15 +371,15 @@ CREATE TABLE `stops` (
 --
 
 CREATE TABLE `teams` (
-  `tid` int(6) NOT NULL,
-  `tname` varchar(15) COLLATE utf8_unicode_ci NOT NULL
+  `id` int(6) NOT NULL,
+  `name` varchar(15) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Déchargement des données de la table `teams`
 --
 
-INSERT INTO `teams` (`tid`, `tname`) VALUES
+INSERT INTO `teams` (`id`, `name`) VALUES
 (1, 'Uncontested'),
 (2, 'Blue Order'),
 (3, 'Red Order');
@@ -445,19 +458,27 @@ ALTER TABLE `bestiary`
 -- Index pour la table `gyms`
 --
 ALTER TABLE `gyms`
-  ADD PRIMARY KEY (`gid`),
-  ADD UNIQUE KEY `gname` (`gname`),
-  ADD UNIQUE KEY `glatitude` (`glatitude`),
-  ADD UNIQUE KEY `glongitude` (`glongitude`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`) USING BTREE,
+  ADD UNIQUE KEY `latitude` (`latitude`) USING BTREE,
+  ADD UNIQUE KEY `longitude` (`longitude`) USING BTREE;
 
 --
 -- Index pour la table `libs`
 --
 ALTER TABLE `libs`
-  ADD PRIMARY KEY (`gid`),
-  ADD UNIQUE KEY `gname` (`gname`),
-  ADD UNIQUE KEY `glatitude` (`glatitude`),
-  ADD UNIQUE KEY `glongitude` (`glongitude`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`) USING BTREE,
+  ADD UNIQUE KEY `longitude` (`longitude`) USING BTREE,
+  ADD UNIQUE KEY `latitude` (`latitude`) USING BTREE;
+
+--
+-- Index pour la table `players`
+--
+ALTER TABLE `players`
+  ADD PRIMARY KEY (`name`),
+  ADD UNIQUE KEY `latitude` (`latitude`) USING BTREE,
+  ADD UNIQUE KEY `longitude` (`longitude`) USING BTREE;
 
 --
 -- Index pour la table `spots`
@@ -469,16 +490,16 @@ ALTER TABLE `spots`
 -- Index pour la table `stops`
 --
 ALTER TABLE `stops`
-  ADD PRIMARY KEY (`sid`),
-  ADD UNIQUE KEY `sname` (`sname`),
-  ADD UNIQUE KEY `slatitude` (`slatitude`),
-  ADD UNIQUE KEY `slongitude` (`slongitude`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`) USING BTREE,
+  ADD UNIQUE KEY `latitude` (`latitude`) USING BTREE,
+  ADD UNIQUE KEY `longitude` (`longitude`) USING BTREE;
 
 --
 -- Index pour la table `teams`
 --
 ALTER TABLE `teams`
-  ADD PRIMARY KEY (`tid`);
+  ADD PRIMARY KEY (`id`) USING BTREE;
 
 --
 -- Index pour la table `usergroup`
@@ -506,13 +527,13 @@ ALTER TABLE `user_like`
 -- AUTO_INCREMENT pour la table `gyms`
 --
 ALTER TABLE `gyms`
-  MODIFY `gid` int(6) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `libs`
 --
 ALTER TABLE `libs`
-  MODIFY `gid` int(6) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `spots`
@@ -524,7 +545,7 @@ ALTER TABLE `spots`
 -- AUTO_INCREMENT pour la table `stops`
 --
 ALTER TABLE `stops`
-  MODIFY `sid` int(6) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `usergroup`

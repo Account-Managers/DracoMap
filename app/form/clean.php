@@ -40,6 +40,7 @@ else if(isset($_GET["type"]) && $_GET["type"] == "all")
 	$db->executeQuery('TRUNCATE TABLE libs');
 	$db->executeQuery('TRUNCATE TABLE stops');
 	$db->executeQuery('TRUNCATE TABLE spots');
+	$db->executeQuery('TRUNCATE TABLE players');
 	echo "success;Database have been cleaned";
 	return;
 }

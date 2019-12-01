@@ -56,12 +56,12 @@ AddMarkerToMap("creatures", "<?php echo $config['websiteAssetsUrl']; ?>/images/i
 <?php
 $Gyms = $db->getQuery('SELECT * FROM gyms');
 foreach ($Gyms as $GymsRow) {
-	if($GymsRow["gteam"] != "1" && $GymsRow["gteam"] != "2" && $GymsRow["gteam"] != "3")
+	if($GymsRow["team"] != "1" && $GymsRow["team"] != "2" && $GymsRow["team"] != "3")
 		continue;
 	
-	$teamInfo = $db->getQuery('SELECT * FROM teams WHERE tid = ? LIMIT 1', array($GymsRow["gteam"]));
+	$teamInfo = $db->getQuery('SELECT * FROM teams WHERE id = ? LIMIT 1', array($GymsRow["team"]));
 ?>
-AddMarkerToMap("gym", "<?php echo $config['websiteAssetsUrl']; ?>/images/gyms/<?php echo $GymsRow["gteam"]; ?>.png", "50", "<?php echo $GymsRow["glatitude"]; ?>", "<?php echo $GymsRow["glongitude"]; ?>", '<center style="width: 180px;"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/gyms/<?php echo $GymsRow["gteam"]; ?>.png" width="75"><hr/><b><?php echo $GymsRow["gname"]; ?></b><br/><hr />Team : <b><?php echo $teamInfo[0]["tname"]; ?></b></center>');
+AddMarkerToMap("gym", "<?php echo $config['websiteAssetsUrl']; ?>/images/gyms/<?php echo $GymsRow["team"]; ?>.png", "50", "<?php echo $GymsRow["latitude"]; ?>", "<?php echo $GymsRow["longitude"]; ?>", '<center style="width: 180px;"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/gyms/<?php echo $GymsRow["team"]; ?>.png" width="75"><hr/><b><?php echo $GymsRow["name"]; ?></b><br/><hr />Team : <b><?php echo $teamInfo[0]["name"]; ?></b></center>');
 <?php
 }
 ?>
@@ -70,12 +70,22 @@ AddMarkerToMap("gym", "<?php echo $config['websiteAssetsUrl']; ?>/images/gyms/<?
 <?php
 $Libs = $db->getQuery('SELECT * FROM libs');
 foreach ($Libs as $LibsRow) {
-	if($LibsRow["gteam"] != "1" && $LibsRow["gteam"] != "2" && $LibsRow["gteam"] != "3")
+	if($LibsRow["team"] != "1" && $LibsRow["team"] != "2" && $LibsRow["team"] != "3")
 		continue;
 	
-	$teamInfo = $db->getQuery('SELECT * FROM teams WHERE tid = ? LIMIT 1', array($LibsRow["gteam"]));
+	$teamInfo = $db->getQuery('SELECT * FROM teams WHERE id = ? LIMIT 1', array($LibsRow["team"]));
 ?>
-AddMarkerToMap("library", "<?php echo $config['websiteAssetsUrl']; ?>/images/stops/<?php echo $LibsRow["gteam"]; ?>.png", "50", "<?php echo $LibsRow["glatitude"]; ?>", "<?php echo $LibsRow["glongitude"]; ?>", '<center style="width: 180px;"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/stops/<?php echo $LibsRow["gteam"]; ?>.png" width="75"><hr/><b><?php echo $LibsRow["gname"]; ?></b><br/><hr />Team : <b><?php echo $teamInfo[0]["tname"]; ?></b></center>');
+AddMarkerToMap("library", "<?php echo $config['websiteAssetsUrl']; ?>/images/libs/<?php echo $LibsRow["team"]; ?>.png", "50", "<?php echo $LibsRow["latitude"]; ?>", "<?php echo $LibsRow["longitude"]; ?>", '<center style="width: 180px;"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/libs/<?php echo $LibsRow["team"]; ?>.png" width="75"><hr/><b><?php echo $LibsRow["name"]; ?></b><br/><hr />Team : <b><?php echo $teamInfo[0]["name"]; ?></b></center>');
+<?php
+}
+?>
+
+// Players
+<?php
+$Players = $db->getQuery('SELECT * FROM players');
+foreach ($Players as $PlayersRow) {
+?>
+AddMarkerToMap("players", "<?php echo $config['websiteAssetsUrl']; ?>/images/player.png", "50", "<?php echo $PlayersRow["latitude"]; ?>", "<?php echo $PlayersRow["longitude"]; ?>", '<center style="width: 180px;"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/player.png" width="75"><hr/><b><?php echo $PlayersRow["name"]; ?></b><br/><?php echo $PlayersRow["latitude"]; ?>, <?php echo $PlayersRow["longitude"]; ?><hr />Team : <b><?php echo $PlayersRow["team"]; ?></b></center>');
 <?php
 }
 ?>
@@ -94,7 +104,7 @@ foreach ($Stops as $StopsRow) {
 
 
 ?>
-AddMarkerToMap("stops", "<?php echo $config['websiteAssetsUrl']; ?>/images/stops/<?php echo $StopsRow["type"]; ?>.png", <?php echo $size; ?>, "<?php echo $StopsRow["slatitude"]; ?>", "<?php echo $StopsRow["slongitude"]; ?>", '<center style="width: 180px;"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/stops/<?php echo $StopsRow["type"]; ?>.png" width="75"><hr/><b><?php echo $StopsRow["sname"]; ?></b><hr/>Founded the : <b><?php echo date('d/m/Y', strtotime($StopsRow["date"])); ?></b><br/>at : <b><?php echo date('h:iA', strtotime($StopsRow["date"])); ?></b><br/>by : <b><?php echo $StopsRow["questby"]; ?></b></center>');
+AddMarkerToMap("stops", "<?php echo $config['websiteAssetsUrl']; ?>/images/stops/<?php echo $StopsRow["type"]; ?>.png", <?php echo $size; ?>, "<?php echo $StopsRow["latitude"]; ?>", "<?php echo $StopsRow["longitude"]; ?>", '<center style="width: 180px;"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/stops/<?php echo $StopsRow["type"]; ?>.png" width="75"><hr/><b><?php echo $StopsRow["name"]; ?></b><hr/>Founded the : <b><?php echo date('d/m/Y', strtotime($StopsRow["date"])); ?></b><br/>at : <b><?php echo date('h:iA', strtotime($StopsRow["date"])); ?></b><br/>by : <b><?php echo $StopsRow["questby"]; ?></b></center>');
 <?php
 }
 ?>
