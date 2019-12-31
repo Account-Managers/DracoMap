@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  Dim 01 déc. 2019 à 19:13
+-- Généré le :  mar. 31 déc. 2019 à 07:18
 -- Version du serveur :  10.1.38-MariaDB
 -- Version de PHP :  7.3.2
 
@@ -326,7 +326,7 @@ CREATE TABLE `players` (
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `latitude` decimal(10,6) NOT NULL,
   `longitude` decimal(10,6) NOT NULL,
-  `team` varchar(50) COLLATE utf8_unicode_ci NOT NULL
+  `team` int(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -476,9 +476,7 @@ ALTER TABLE `libs`
 -- Index pour la table `players`
 --
 ALTER TABLE `players`
-  ADD PRIMARY KEY (`name`),
-  ADD UNIQUE KEY `latitude` (`latitude`) USING BTREE,
-  ADD UNIQUE KEY `longitude` (`longitude`) USING BTREE;
+  ADD PRIMARY KEY (`name`);
 
 --
 -- Index pour la table `spots`

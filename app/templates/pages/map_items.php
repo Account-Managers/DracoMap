@@ -89,8 +89,13 @@ AddMarkerToMap("library", "<?php echo $config['websiteAssetsUrl']; ?>/images/lib
 <?php
 $Players = $db->getQuery('SELECT * FROM players');
 foreach ($Players as $PlayersRow) {
+	if($GymsRow["team"] != "1" && $GymsRow["team"] != "2" && $GymsRow["team"] != "3")
+		continue;
+	
+	$teamInfo = $db->getQuery('SELECT * FROM teams WHERE id = ? LIMIT 1', array($GymsRow["team"]));
+
 ?>
-AddMarkerToMap("players", "<?php echo $config['websiteAssetsUrl']; ?>/images/player.png", "50", "<?php echo $PlayersRow["latitude"]; ?>", "<?php echo $PlayersRow["longitude"]; ?>", '<center style="width: 180px;"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/player.png" width="75"><hr/><b><?php echo $PlayersRow["name"]; ?></b><br/><?php echo $PlayersRow["latitude"]; ?>, <?php echo $PlayersRow["longitude"]; ?><hr />Team : <b><?php echo $PlayersRow["team"]; ?></b></center>');
+AddMarkerToMap("players", "<?php echo $config['websiteAssetsUrl']; ?>/images/player.png", "50", "<?php echo $PlayersRow["latitude"]; ?>", "<?php echo $PlayersRow["longitude"]; ?>", '<center style="width: 180px;"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/player.png" width="75"><hr/><b><?php echo $PlayersRow["name"]; ?></b><br/><?php echo $PlayersRow["latitude"]; ?>, <?php echo $PlayersRow["longitude"]; ?><hr />Team : <b><?php echo $teamInfo[0]["name"]; ?></b></center>');
 <?php
 }
 ?>
