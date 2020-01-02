@@ -29,6 +29,7 @@ if(isset($_SESSION['login'])) {
 			</ul>
 			
 			<div class="user">
+				<div class="menuToggle"><i class="fas fa-cog"></i></div>
 				<?php if(!isset($_SESSION['login'])) { ?>
 				<div class="avatar"><img src="avatars/default_avatar.png"></div>
 				<div class="username">Guest <i class="fas fa-caret-down"></i></div>
@@ -76,24 +77,86 @@ if(isset($_SESSION['login'])) {
 			</div>
 			
 			<div class="items_toggles">
-				<input type="checkbox" id="toggle_players" checked>
+				<input type="checkbox" class="players" checked>
 				<label for="toggle_players">Players</label>
 				
-				<input type="checkbox" id="toggle_creatures" checked>
-				<label for="toggle_creatures">Creatures</label>
+				<div class="clearfix"></div>
 				
-				<input type="checkbox" id="toggle_gyms" checked>
-				<label for="toggle_gyms">Arenas</label>
+				<input type="checkbox" class="creatures" checked>
+				<label>Creatures</label>
 				
-				<input type="checkbox" id="toggle_library" checked>
-				<label for="toggle_library">Librarys</label>
+				<div class="clearfix"></div>
+				
+				<input type="checkbox" class="gym" checked>
+				<label>Arenas</label>
+				
+				<div class="clearfix"></div>
+				
+				<input type="checkbox" class="librarys" checked>
+				<label>Librarys</label>
+				
+				<div class="clearfix"></div>
+				
+				<input type="checkbox" class="ALTAR" checked>
+				<label>Altar</label>
+				
+				<div class="clearfix"></div>
+				
+				<input type="checkbox" class="CONTEST" checked>
+				<label>Contest</label>
+				
+				<div class="clearfix"></div>
+				
+				<input type="checkbox" class="ELEMENTAL_EARTH" checked>
+				<label>Elemental earth</label>
+				
+				<div class="clearfix"></div>
+				
+				<input type="checkbox" class="ELEMENTAL_FIRE" checked>
+				<label>Elemental fire</label>
+				
+				<div class="clearfix"></div>
+				
+				<input type="checkbox" class="ELEMENTAL_WATER" checked>
+				<label>Elemental water</label>
+				
+				<div class="clearfix"></div>
+				
+				<input type="checkbox" class="ELEMENTAL_WIND" checked>
+				<label>Elemental wild</label>
+				
+				<div class="clearfix"></div>
+				
+				<input type="checkbox" class="ELEMENTAL_DUNGEON" checked>
+				<label>Elemental dungeon</label>
+				
+				<input type="checkbox" class="ROOST" checked>
+				<label>Roost</label>
+				
+				<div class="clearfix"></div>
+				
+				<input type="checkbox" class="OBELISK" checked>
+				<label>Obelisk</label>
+				
+				<div class="clearfix"></div>
+				
+				<input type="checkbox" class="PORTAL" checked>
+				<label>Portal</label>
+				
+				<div class="clearfix"></div>
+				
+				<input type="checkbox" class="DUNGEON_STOP" checked>
+				<label>Dungeon stop</label>
+				
+				<div class="clearfix"></div>
 
-				<input type="checkbox" id="toggle_building" checked>
-				<label for="toggle_building">All Others</label>
+				<input type="checkbox" class="STOP" checked>
+				<label>Stops</label>
 			</div>
 		</div>
 		
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha256-KM512VNnjElC30ehFwehXjx1YCHPiQkOPmqnrWtpccM=" crossorigin="anonymous"></script>
 		<script src="<?php echo $config['websiteAssetsUrl']; ?>/js/scripts.js"></script>
 		<script src="<?php echo $config['websiteAssetsUrl']; ?>/js/leaflet.js"></script>
 

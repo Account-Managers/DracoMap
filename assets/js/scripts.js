@@ -5,12 +5,12 @@ $(document).delegate('header .menu li a', 'click', function(e){
 	
 	if($(this).is("#mapButton"))
 	{
-		$('#global').hide();
+		$('#global, header .menuToggle').show();
 		$('#map_container').fadeIn('slow');
 	}
 	else
 	{
-		$('#map_container').hide();
+		$('#map_container, header .menuToggle').hide();
 		linkLocation = $(this).attr("href");
 		if(linkLocation != "#")
 		{
@@ -420,6 +420,13 @@ function refreshMarkers() {
 	$('#map_container #map_points').load("app/templates/pages/map_items.php");
 }
 
+$("header .menuToggle").click(function () {
+	if($('header .user .submenu').is(":visible"))
+		$("header .user .submenu").slideUp();
+		
+	$("#map_container .items_toggles").toggle("slide", { direction: "right" }, 300);
+});
+
 $("#alertMsg .close").click(function () {
 	$('#alertMsg').slideUp();
 });
@@ -428,7 +435,7 @@ $("#overlay .close").click(function () {
 	$('#overlay').fadeOut('slow');
 });
 
-$("#map_container #toggle_creatures, #map_container #toggle_gyms, #map_container #toggle_building, #map_container #toggle_library, #map_container #toggle_players").click(function () {
+$("#map_container .items_toggles input").click(function () {
 	refreshMarkers();
 });
 
@@ -442,12 +449,16 @@ $("header .user .username").click(function () {
 	}
 	else
 	{
+		if($('header .menuToggle').is(":visible"))
+			$("#map_container .items_toggles").hide("slide", { direction: "right" }, 300);
+		
 		$("header .user .submenu").slideDown();
 	}
 });
 
 function getCapturedCreature(long, latitude) {
 	$('#global').hide();
+	$('#global, header .menuToggle').show();
 	$('#map_container').fadeIn('slow');
 	$("header .menu li a").removeClass("active");
 	$("header .menu li a#mapButton").addClass("active");

@@ -17,30 +17,12 @@ function AddMarkerToMap(category, icon_url, icon_size, lat, long, message)
 	map.addLayer(marker);
 	marker._icon.classList.add(category);
 	
-	if(!$("#map_container #toggle_creatures").prop("checked") && category == "creatures")
-	{
-		map.removeLayer(marker);
-	}
-	
-	if(!$("#map_container #toggle_gyms").prop("checked") && category == "gym")
-	{
-		map.removeLayer(marker);
-	}
-	
-	if(!$("#map_container #toggle_players").prop("checked") && category == "players")
-	{
-		map.removeLayer(marker);
-	}
-	
-	if(!$("#map_container #toggle_building").prop("checked") && category == "stops")
-	{
-		map.removeLayer(marker);
-	}
-	
-	if(!$("#map_container #toggle_library").prop("checked") && category == "library")
-	{
-		map.removeLayer(marker);
-	}
+	$("#map_container .items_toggles input").each(function() {
+		if(!$(this).prop("checked") && category == $(this).attr('class'))
+		{
+			map.removeLayer(marker);
+		}
+	});
 }
 
 // CREATURES
@@ -80,7 +62,7 @@ foreach ($Libs as $LibsRow) {
 	
 	$teamInfo = $db->getQuery('SELECT * FROM teams WHERE id = ? LIMIT 1', array($LibsRow["team"]));
 ?>
-AddMarkerToMap("library", "<?php echo $config['websiteAssetsUrl']; ?>/images/libs/<?php echo $LibsRow["team"]; ?>.png", "50", "<?php echo $LibsRow["latitude"]; ?>", "<?php echo $LibsRow["longitude"]; ?>", '<center style="width: 180px;"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/libs/<?php echo $LibsRow["team"]; ?>.png" width="75"><hr/><b><?php echo $LibsRow["name"]; ?></b><br/><hr />Team : <b><?php echo $teamInfo[0]["name"]; ?></b></center>');
+AddMarkerToMap("librarys", "<?php echo $config['websiteAssetsUrl']; ?>/images/libs/<?php echo $LibsRow["team"]; ?>.png", "50", "<?php echo $LibsRow["latitude"]; ?>", "<?php echo $LibsRow["longitude"]; ?>", '<center style="width: 180px;"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/libs/<?php echo $LibsRow["team"]; ?>.png" width="75"><hr/><b><?php echo $LibsRow["name"]; ?></b><br/><hr />Team : <b><?php echo $teamInfo[0]["name"]; ?></b></center>');
 <?php
 }
 ?>
@@ -106,15 +88,12 @@ $Stops = $db->getQuery('SELECT * FROM stops');
 foreach ($Stops as $StopsRow) {
 	$size = 45;
 	
-	if($StopsRow["type"] == "STOP")
-		$size = 25;
-	
-	if($StopsRow["type"] == "DUNGEON_STOP")
+	if($StopsRow["type"] == "STOP" || $StopsRow["type"] == "DUNGEON_STOP")
 		$size = 25;
 
 
 ?>
-AddMarkerToMap("stops", "<?php echo $config['websiteAssetsUrl']; ?>/images/stops/<?php echo $StopsRow["type"]; ?>.png", <?php echo $size; ?>, "<?php echo $StopsRow["latitude"]; ?>", "<?php echo $StopsRow["longitude"]; ?>", '<center style="width: 180px;"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/stops/<?php echo $StopsRow["type"]; ?>.png" width="75"><hr/><b><?php echo $StopsRow["name"]; ?></b><hr/>Founded the : <b><?php echo date('d/m/Y', strtotime($StopsRow["date"])); ?></b><br/>at : <b><?php echo date('h:iA', strtotime($StopsRow["date"])); ?></b><br/>by : <b><?php echo $StopsRow["questby"]; ?></b></center>');
+AddMarkerToMap("<?php echo $StopsRow["type"]; ?>", "<?php echo $config['websiteAssetsUrl']; ?>/images/stops/<?php echo $StopsRow["type"]; ?>.png", <?php echo $size; ?>, "<?php echo $StopsRow["latitude"]; ?>", "<?php echo $StopsRow["longitude"]; ?>", '<center style="width: 180px;"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/stops/<?php echo $StopsRow["type"]; ?>.png" width="75"><hr/><b><?php echo $StopsRow["name"]; ?></b><hr/>Founded the : <b><?php echo date('d/m/Y', strtotime($StopsRow["date"])); ?></b><br/>at : <b><?php echo date('h:iA', strtotime($StopsRow["date"])); ?></b><br/>by : <b><?php echo $StopsRow["questby"]; ?></b></center>');
 <?php
 }
 ?>
