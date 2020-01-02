@@ -27,7 +27,7 @@ function AddMarkerToMap(category, icon_url, icon_size, lat, long, message)
 
 // CREATURES
 <?php
-$Creatures = $db->getQuery('SELECT * FROM spots');
+$Creatures = $db->getQuery('SELECT * FROM creatures WHERE visible = ?', array(1));
 foreach ($Creatures as $CreatureRow) {
 	if($CreatureRow["creature"] == null || $CreatureRow["creature"] == "")
 		continue;

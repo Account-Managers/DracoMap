@@ -1,3 +1,47 @@
+var intervalClearDatabase = 1 * 60,
+	counterClear = 1 * 60;
+	
+function refreshTimer() {
+	if(counterClear >= 60)
+		$(".items_toggles .desc span").text(Math.round(counterClear/60) + " hour(s)");
+	else
+		$(".items_toggles .desc span").text(counterClear + " minute(s)");
+}
+
+function checkClearDb() {
+	counterClear--;
+	refreshTimer();
+	
+	if(counterClear == 0)
+	{
+		counterClear = intervalClearDatabase;
+		showAlert("Database cleared", "success");
+		
+		$.ajax({
+			type: "POST",
+			name: "login",
+			url: 'app/form/clean.php?type=clearTimer',
+			success: function(data)
+			{
+				clearIntervalUpdate();
+				refreshMarkers();
+			}
+		});
+	}
+}
+
+$('.items_toggles select').on('change', function() {
+	var hours = $(this).find(":selected").val();
+	clearInterval(intervalClearDb);
+	intervalClearDatabase = hours * 60;
+	counterClear = hours * 60;
+	intervalClearDb = setInterval(checkClearDb, 1000 * 60);
+	refreshTimer();
+});
+
+var intervalClearDb = setInterval(checkClearDb, 1000 * 60);
+refreshTimer();
+
 $(document).delegate('header .menu li a', 'click', function(e){
 	e.preventDefault();
 	$("header .menu li a").removeClass("active");
@@ -465,4 +509,9 @@ function getCapturedCreature(long, latitude) {
 	map.setView([long, latitude], 18);
 }
 
-setInterval(refreshMarkers, 60000);
+function clearIntervalUpdate() {
+	clearInterval(refreshMakerInterval);
+	refreshMakerInterval = setInterval(refreshMarkers, 60000);
+}
+
+var refreshMakerInterval = setInterval(refreshMarkers, 60000);

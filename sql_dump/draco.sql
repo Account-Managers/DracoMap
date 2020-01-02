@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  mar. 31 déc. 2019 à 07:18
+-- Généré le :  jeu. 02 jan. 2020 à 23:01
 -- Version du serveur :  10.1.38-MariaDB
 -- Version de PHP :  7.3.2
 
@@ -287,6 +287,26 @@ INSERT INTO `bestiary` (`gid`, `id`, `monster`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `creatures`
+--
+
+CREATE TABLE `creatures` (
+  `spotid` int(6) UNSIGNED NOT NULL,
+  `creature` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `cp` int(6) NOT NULL,
+  `iv` int(3) NOT NULL,
+  `latitude` decimal(10,6) NOT NULL,
+  `longitude` decimal(10,6) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `good` int(3) NOT NULL,
+  `bad` int(1) NOT NULL,
+  `spotter` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `visible` enum('0','1') COLLATE utf8_unicode_ci NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `gyms`
 --
 
@@ -327,25 +347,6 @@ CREATE TABLE `players` (
   `latitude` decimal(10,6) NOT NULL,
   `longitude` decimal(10,6) NOT NULL,
   `team` int(2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `spots`
---
-
-CREATE TABLE `spots` (
-  `spotid` int(6) UNSIGNED NOT NULL,
-  `creature` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `cp` int(6) NOT NULL,
-  `iv` int(3) NOT NULL,
-  `latitude` decimal(10,6) NOT NULL,
-  `longitude` decimal(10,6) NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `good` int(3) NOT NULL,
-  `bad` int(1) NOT NULL,
-  `spotter` varchar(100) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -455,6 +456,12 @@ ALTER TABLE `bestiary`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Index pour la table `creatures`
+--
+ALTER TABLE `creatures`
+  ADD PRIMARY KEY (`spotid`);
+
+--
 -- Index pour la table `gyms`
 --
 ALTER TABLE `gyms`
@@ -477,12 +484,6 @@ ALTER TABLE `libs`
 --
 ALTER TABLE `players`
   ADD PRIMARY KEY (`name`);
-
---
--- Index pour la table `spots`
---
-ALTER TABLE `spots`
-  ADD PRIMARY KEY (`spotid`);
 
 --
 -- Index pour la table `stops`
@@ -522,6 +523,12 @@ ALTER TABLE `user_like`
 --
 
 --
+-- AUTO_INCREMENT pour la table `creatures`
+--
+ALTER TABLE `creatures`
+  MODIFY `spotid` int(6) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT pour la table `gyms`
 --
 ALTER TABLE `gyms`
@@ -532,12 +539,6 @@ ALTER TABLE `gyms`
 --
 ALTER TABLE `libs`
   MODIFY `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT pour la table `spots`
---
-ALTER TABLE `spots`
-  MODIFY `spotid` int(6) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `stops`

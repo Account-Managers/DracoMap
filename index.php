@@ -77,8 +77,22 @@ if(isset($_SESSION['login'])) {
 			</div>
 			
 			<div class="items_toggles">
+				<label>Clear map every</label>
+				<select id="toggleClear">
+					<option value="1">1 hour</option>
+					<option value="24">24 hours</option>
+					<option value="48">48 hours</option>
+					<option value="96">96 hours</option>
+					<option value="191">191 hours</option>
+					<option value="999999">Infinite</option>
+				</select>
+				
+				<div class="desc">Next clear in <span>30 hours</span>.</div>
+				
+				<div class="clearfix"></div>
+				
 				<input type="checkbox" class="players" checked>
-				<label for="toggle_players">Players</label>
+				<label>Players</label>
 				
 				<div class="clearfix"></div>
 				

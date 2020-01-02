@@ -6,7 +6,7 @@ require_once("../../../includes/config.php");
 
 <div class="list_items">
 <?php
-$Creatures = $db->getQuery('SELECT * FROM spots ORDER BY iv DESC');
+$Creatures = $db->getQuery('SELECT * FROM creatures ORDER BY iv DESC');
 foreach ($Creatures as $CreatureRow) {
 	if($CreatureRow["creature"] == null || $CreatureRow["creature"] == "")
 		continue;

@@ -11,7 +11,7 @@ $userInfo = $db->getQuery('SELECT * FROM users WHERE id=?', array($_SESSION['log
 $countGym = $db->getQuery('SELECT COUNT(*) AS count_row FROM gyms');
 $countLib = $db->getQuery('SELECT COUNT(*) AS count_row FROM libs');
 $countStops = $db->getQuery('SELECT COUNT(*) AS count_row FROM stops');
-$countCreature = $db->getQuery('SELECT COUNT(*) AS count_row FROM spots');
+$countCreature = $db->getQuery('SELECT COUNT(*) AS count_row FROM creatures');
 ?>
 
 

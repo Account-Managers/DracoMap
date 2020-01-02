@@ -30,8 +30,15 @@ else if(isset($_GET["type"]) && $_GET["type"] == "buildings")
 }
 else if(isset($_GET["type"]) && $_GET["type"] == "creatures")
 {
-	$db->executeQuery('TRUNCATE TABLE spots');
+	$db->executeQuery('TRUNCATE TABLE creatures');
 	echo "success;Creatures have been deleted";
+	return;
+}
+else if(isset($_GET["type"]) && $_GET["type"] == "clearTimer")
+{
+	$db->executeQuery('DELETE FROM stops WHERE type = ? OR type = ?', array("STOP", "DUNGEON_STOP"));
+	$db->executeQuery('UPDATE creatures SET visible = ?', array(0));
+	echo "success;Database have been cleaned";
 	return;
 }
 else if(isset($_GET["type"]) && $_GET["type"] == "all")
@@ -39,7 +46,7 @@ else if(isset($_GET["type"]) && $_GET["type"] == "all")
 	$db->executeQuery('TRUNCATE TABLE gyms');
 	$db->executeQuery('TRUNCATE TABLE libs');
 	$db->executeQuery('TRUNCATE TABLE stops');
-	$db->executeQuery('TRUNCATE TABLE spots');
+	$db->executeQuery('TRUNCATE TABLE creatures');
 	$db->executeQuery('TRUNCATE TABLE players');
 	echo "success;Database have been cleaned";
 	return;
