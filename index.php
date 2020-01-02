@@ -77,95 +77,101 @@ if(isset($_SESSION['login'])) {
 			</div>
 			
 			<div class="items_toggles">
-				<label>Clear map every</label>
-				<select id="toggleClear">
-					<option value="1">1 hour</option>
-					<option value="24">24 hours</option>
-					<option value="48">48 hours</option>
-					<option value="96">96 hours</option>
-					<option value="191">191 hours</option>
-					<option value="999999">Infinite</option>
-				</select>
-				
-				<div class="desc">Next clear in <span>30 hours</span>.</div>
-				
-				<div class="clearfix"></div>
-				
-				<input type="checkbox" class="players" checked>
-				<label>Players</label>
-				
-				<div class="clearfix"></div>
-				
-				<input type="checkbox" class="creatures" checked>
-				<label>Creatures</label>
-				
-				<div class="clearfix"></div>
-				
-				<input type="checkbox" class="gym" checked>
-				<label>Arenas</label>
-				
-				<div class="clearfix"></div>
-				
-				<input type="checkbox" class="librarys" checked>
-				<label>Librarys</label>
-				
-				<div class="clearfix"></div>
-				
-				<input type="checkbox" class="ALTAR" checked>
-				<label>Altar</label>
-				
-				<div class="clearfix"></div>
-				
-				<input type="checkbox" class="CONTEST" checked>
-				<label>Contest</label>
-				
-				<div class="clearfix"></div>
-				
-				<input type="checkbox" class="ELEMENTAL_EARTH" checked>
-				<label>Elemental earth</label>
-				
-				<div class="clearfix"></div>
-				
-				<input type="checkbox" class="ELEMENTAL_FIRE" checked>
-				<label>Elemental fire</label>
-				
-				<div class="clearfix"></div>
-				
-				<input type="checkbox" class="ELEMENTAL_WATER" checked>
-				<label>Elemental water</label>
-				
-				<div class="clearfix"></div>
-				
-				<input type="checkbox" class="ELEMENTAL_WIND" checked>
-				<label>Elemental wild</label>
-				
-				<div class="clearfix"></div>
-				
-				<input type="checkbox" class="ELEMENTAL_DUNGEON" checked>
-				<label>Elemental dungeon</label>
-				
-				<input type="checkbox" class="ROOST" checked>
-				<label>Roost</label>
-				
-				<div class="clearfix"></div>
-				
-				<input type="checkbox" class="OBELISK" checked>
-				<label>Obelisk</label>
-				
-				<div class="clearfix"></div>
-				
-				<input type="checkbox" class="PORTAL" checked>
-				<label>Portal</label>
-				
-				<div class="clearfix"></div>
-				
-				<input type="checkbox" class="DUNGEON_STOP" checked>
-				<label>Dungeon stop</label>
-				
-				<div class="clearfix"></div>
+				<div class="scroller">
+					<label>Clear map every</label>
+					<select id="toggleClear">
+						<option value="1">1 hour</option>
+						<option value="24">24 hours</option>
+						<option value="48">48 hours</option>
+						<option value="96">96 hours</option>
+						<option value="191">191 hours</option>
+						<option value="999999">Infinite</option>
+					</select>
+					
+					<div class="timerClear desc">Next clear in <span>30 hours</span>.</div>
+					
+					<div class="clearfix"></div>
+					
+					<input type="checkbox" class="players" checked>
+					<label>Players</label>
+					
+					<div class="clearfix"></div>
+					
+					<input type="checkbox" class="creatures" checked>
+					<label>Creatures</label>
+					
+					<div class="clearfix"></div>
+					
+					<input type="checkbox" class="gym" checked>
+					<label>Arenas</label>
+					
+					<div class="clearfix"></div>
+					
+					<input type="checkbox" class="librarys" checked>
+					<label>Librarys</label>
+					
+					<div class="clearfix"></div>
+					
+					<input type="checkbox" class="ALTAR" checked>
+					<label>Altar</label>
+					
+					<div class="clearfix"></div>
+					
+					<input type="checkbox" class="CONTEST" checked>
+					<label>Contest</label>
+					
+					<div class="clearfix"></div>
+					
+					<input type="checkbox" class="ELEMENTAL_EARTH" checked>
+					<label>Elemental earth</label>
+					
+					<div class="clearfix"></div>
+					
+					<input type="checkbox" class="ELEMENTAL_FIRE" checked>
+					<label>Elemental fire</label>
+					
+					<div class="clearfix"></div>
+					
+					<input type="checkbox" class="ELEMENTAL_WATER" checked>
+					<label>Elemental water</label>
+					
+					<div class="clearfix"></div>
+					
+					<input type="checkbox" class="ELEMENTAL_WIND" checked>
+					<label>Elemental wild</label>
+					
+					<div class="clearfix"></div>
+					
+					<input type="checkbox" class="ELEMENTAL_DUNGEON" checked>
+					<label>Elemental dungeon</label>
+					
+					<div class="clearfix"></div>
+					
+					<input type="checkbox" class="ROOST" checked>
+					<label>Roost</label>
+					
+					<div class="clearfix"></div>
+					
+					<input type="checkbox" class="OBELISK" checked>
+					<label>Obelisk</label>
+					
+					<div class="clearfix"></div>
+					
+					<input type="checkbox" class="PORTAL" checked>
+					<label>Portal</label>
+					
+					<div class="clearfix"></div>
+					
+					<input type="checkbox" class="DUNGEON_STOP" checked>
+					<label>Dungeon stop</label>
+					
+					<div class="clearfix"></div>
 
-				<input type="checkbox" class="STOP" checked>
-				<label>Stops</label>
+					<input type="checkbox" class="STOP" checked>
+					<label>Stops</label>
+				</div>
+				
+				<div class="timerMap desc">Next map update in <span>60</span> seconds.</div>
 			</div>
 		</div>
 		

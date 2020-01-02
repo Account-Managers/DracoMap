@@ -1,11 +1,12 @@
 var intervalClearDatabase = 1 * 60,
-	counterClear = 1 * 60;
+	counterClear = 1 * 60,
+	intervalMap = 60;
 	
 function refreshTimer() {
 	if(counterClear >= 60)
-		$(".items_toggles .desc span").text(Math.round(counterClear/60) + " hour(s)");
+		$(".items_toggles .timerClear span").text(Math.round(counterClear/60) + " hour(s)");
 	else
-		$(".items_toggles .desc span").text(counterClear + " minute(s)");
+		$(".items_toggles .timerClear span").text(counterClear + " minute(s)");
 }
 
 function checkClearDb() {
@@ -23,7 +24,6 @@ function checkClearDb() {
 			url: 'app/form/clean.php?type=clearTimer',
 			success: function(data)
 			{
-				clearIntervalUpdate();
 				refreshMarkers();
 			}
 		});
@@ -460,6 +460,7 @@ $(document).delegate('.like_count .unlike_button', 'click', function(e){
 });
 
 function refreshMarkers() {
+	intervalMap = 60;
 	$('#map_container #map .leaflet-marker-pane').html("");
 	$('#map_container #map_points').load("app/templates/pages/map_items.php");
 }
@@ -480,7 +481,7 @@ $("#overlay .close").click(function () {
 });
 
 $("#map_container .items_toggles input").click(function () {
-	refreshMarkers();
+	setClearInterval(4);
 });
 
 
@@ -509,9 +510,18 @@ function getCapturedCreature(long, latitude) {
 	map.setView([long, latitude], 18);
 }
 
-function clearIntervalUpdate() {
-	clearInterval(refreshMakerInterval);
-	refreshMakerInterval = setInterval(refreshMarkers, 60000);
+function refreshMapInterval() {
+	intervalMap--;
+	$(".items_toggles .timerMap span").text(intervalMap);
+	
+	if(intervalMap == 0)
+	{
+		refreshMarkers();
+	}
 }
 
-var refreshMakerInterval = setInterval(refreshMarkers, 60000);
+function setClearInterval(seconds) {
+	intervalMap = seconds;
+}
+
+setInterval(refreshMapInterval, 1000);
