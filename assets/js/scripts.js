@@ -2,6 +2,40 @@ var intervalClearDatabase = 1 * 60,
 	counterClear = 1 * 60,
 	intervalMap = 60;
 	
+class MarkerClass {
+	constructor(data) {
+		this.category = data.category;
+		this.icon_url = data.icon_url;
+		this.icon_size = data.icon_size;
+		this.lat = data.lat;
+		this.long = data.long;
+		this.message = data.message;
+	}
+	
+	async init(callback) {
+		var image = new L.Icon({
+			iconUrl: this.icon_url,
+			iconSize: [this.icon_size, this.icon_size]
+		});
+		
+		marker = await new L.marker([parseFloat(this.lat), parseFloat(this.long)],{
+			icon: image
+		}).bindPopup(this.message);
+		
+		await map.addLayer(marker);
+		marker._icon.classList.add(this.category);
+		
+		$("#map_container .items_toggles input").each(function() {
+			if(!$(this).prop("checked") && category == $(this).attr('class'))
+			{
+				map.removeLayer(marker);
+			}
+		});
+		
+		callback();
+	}
+}
+	
 function refreshTimer() {
 	if(counterClear >= 60)
 		$(".items_toggles .timerClear span").text(Math.round(counterClear/60) + " hour(s)");
