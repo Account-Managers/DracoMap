@@ -66,7 +66,9 @@ foreach ($Players as $PlayersRow) {
 	$teamInfo = $db->getQuery('SELECT * FROM teams WHERE id = ? LIMIT 1', array($PlayersRow["team"]));
 
 ?>
-//AddMarkerToMap("players", "<?php echo $config['websiteAssetsUrl']; ?>/images/player.png", "50", "<?php echo $PlayersRow["latitude"]; ?>", "<?php echo $PlayersRow["longitude"]; ?>", '<center style="width: 180px;"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/player.png" width="75"><hr/><b><?php echo $PlayersRow["name"]; ?></b><br/><?php echo $PlayersRow["latitude"]; ?>, <?php echo $PlayersRow["longitude"]; ?><hr />Team : <b><?php echo $teamInfo[0]["name"]; ?></b></center>');
+Id++;
+	var marker = new MarkerClass({ category : "players", icon_url : "<?php echo $config['websiteAssetsUrl']; ?>/images/player.png", icon_size : "50", lat: "<?php echo $PlayersRow["latitude"]; ?>", long: "<?php echo $PlayersRow["longitude"]; ?>", message: '<center style="width: 180px;"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/player.png" width="75"><hr/><b><?php echo $PlayersRow["name"]; ?></b><br/><?php echo $PlayersRow["latitude"]; ?>, <?php echo $PlayersRow["longitude"]; ?><hr />Team : <b><?php echo $teamInfo[0]["name"]; ?></b></center>'});
+	Marker[Id] = marker;
 <?php
 }
 ?>

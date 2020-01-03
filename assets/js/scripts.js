@@ -25,8 +25,10 @@ class MarkerClass {
 		await map.addLayer(marker);
 		marker._icon.classList.add(this.category);
 		
+		var thisClass = this;
+		
 		$("#map_container .items_toggles input").each(function() {
-			if(!$(this).prop("checked") && category == $(this).attr('class'))
+			if(!$(this).prop("checked") && thisClass.category == $(this).attr('class'))
 			{
 				map.removeLayer(marker);
 			}
