@@ -321,6 +321,7 @@ header .menuToggle:hover {
 	z-index: 12;
 	color: #FFF;
 	font-family: 'Oswald';
+	display: none;
 }
 
 #map_container .items_toggles .timerMap {
