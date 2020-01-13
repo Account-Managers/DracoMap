@@ -1,3 +1,83 @@
+var intervalClearDatabase = 1 * 60,
+	counterClear = 1 * 60,
+	intervalMap = 60;
+	
+class MarkerClass {
+	constructor(data) {
+		this.category = data.category;
+		this.icon_url = data.icon_url;
+		this.icon_size = data.icon_size;
+		this.lat = data.lat;
+		this.long = data.long;
+		this.message = data.message;
+	}
+	
+	async init(callback) {
+		var image = new L.Icon({
+			iconUrl: this.icon_url,
+			iconSize: [this.icon_size, this.icon_size]
+		});
+		
+		marker = await new L.marker([parseFloat(this.lat), parseFloat(this.long)],{
+			icon: image
+		}).bindPopup(this.message);
+		
+		await map.addLayer(marker);
+		marker._icon.classList.add(this.category);
+		
+		var thisClass = this;
+		
+		$("#map_container .items_toggles input").each(function() {
+			if(!$(this).prop("checked") && thisClass.category == $(this).attr('class'))
+			{
+				map.removeLayer(marker);
+			}
+		});
+		
+		callback();
+	}
+}
+	
+function refreshTimer() {
+	if(counterClear >= 60)
+		$(".items_toggles .timerClear span").text(Math.round(counterClear/60) + " hour(s)");
+	else
+		$(".items_toggles .timerClear span").text(counterClear + " minute(s)");
+}
+
+function checkClearDb() {
+	counterClear--;
+	refreshTimer();
+	
+	if(counterClear == 0)
+	{
+		counterClear = intervalClearDatabase;
+		showAlert("Database cleared", "success");
+		
+		$.ajax({
+			type: "POST",
+			name: "login",
+			url: 'app/form/clean.php?type=clearTimer',
+			success: function(data)
+			{
+				refreshMarkers();
+			}
+		});
+	}
+}
+
+$('.items_toggles select').on('change', function() {
+	var hours = $(this).find(":selected").val();
+	clearInterval(intervalClearDb);
+	intervalClearDatabase = hours * 60;
+	counterClear = hours * 60;
+	intervalClearDb = setInterval(checkClearDb, 1000 * 60);
+	refreshTimer();
+});
+
+var intervalClearDb = setInterval(checkClearDb, 1000 * 60);
+refreshTimer();
+
 $(document).delegate('header .menu li a', 'click', function(e){
 	e.preventDefault();
 	$("header .menu li a").removeClass("active");
@@ -5,12 +85,12 @@ $(document).delegate('header .menu li a', 'click', function(e){
 	
 	if($(this).is("#mapButton"))
 	{
-		$('#global').hide();
+		$('#global, header .menuToggle').show();
 		$('#map_container').fadeIn('slow');
 	}
 	else
 	{
-		$('#map_container').hide();
+		$('#map_container, header .menuToggle').hide();
 		linkLocation = $(this).attr("href");
 		if(linkLocation != "#")
 		{
@@ -220,13 +300,12 @@ $(document).delegate('#registerForm', 'submit', function(e){
 	});
 });
 
-
-$(document).delegate('#cleanLibButton', 'click', function(e){
+$(document).delegate('#cleanPilarButton', 'click', function(e){
 	e.preventDefault();
     $.ajax({
 		type: "POST",
 		name: "login",
-		url: 'app/form/clean.php?type=libs',
+		url: 'app/form/clean.php?type=pilars',
         success: function(data)
         {
 			var eventData = data.split(';');
@@ -268,6 +347,55 @@ $(document).delegate('#cleanGymButton', 'click', function(e){
         }
 	});
 });
+
+$(document).delegate('#cleanLibButton', 'click', function(e){
+	e.preventDefault();
+    $.ajax({
+		type: "POST",
+		name: "login",
+		url: 'app/form/clean.php?type=libs',
+        success: function(data)
+        {
+			var eventData = data.split(';');
+			var eventName = jQuery.trim(eventData[0]);
+			var msg = eventData[1];
+			if(eventName == "error") {
+				showAlert(msg, "error");
+			}
+			else if(eventName == "success") 
+			{
+				$('#overlay .overlay_content').load("app/templates/overlay/admin_settings.php");
+				refreshMarkers();
+				showAlert(msg, "success");
+			}
+        }
+	});
+});
+
+$(document).delegate('#cleanPortalButton', 'click', function(e){
+	e.preventDefault();
+    $.ajax({
+		type: "POST",
+		name: "login",
+		url: 'app/form/clean.php?type=portals',
+        success: function(data)
+        {
+			var eventData = data.split(';');
+			var eventName = jQuery.trim(eventData[0]);
+			var msg = eventData[1];
+			if(eventName == "error") {
+				showAlert(msg, "error");
+			}
+			else if(eventName == "success") 
+			{
+				$('#overlay .overlay_content').load("app/templates/overlay/admin_settings.php");
+				refreshMarkers();
+				showAlert(msg, "success");
+			}
+        }
+	});
+});
+
 
 $(document).delegate('#cleanBuildingsButton', 'click', function(e){
 	e.preventDefault();
@@ -335,6 +463,7 @@ $(document).delegate('#dropDatabaseButton', 'click', function(e){
 			{
 				$('#overlay .overlay_content').load("app/templates/overlay/admin_settings.php");
 				refreshMarkers();
+				$('#overlay').fadeOut('slow');
 				showAlert(msg, "success");
 			}
         }
@@ -416,9 +545,17 @@ $(document).delegate('.like_count .unlike_button', 'click', function(e){
 });
 
 function refreshMarkers() {
+	intervalMap = 60;
 	$('#map_container #map .leaflet-marker-pane').html("");
 	$('#map_container #map_points').load("app/templates/pages/map_items.php");
 }
+
+$("header .menuToggle").click(function () {
+	if($('header .user .submenu').is(":visible"))
+		$("header .user .submenu").slideUp();
+		
+	$("#map_container .items_toggles").toggle("slide", { direction: "right" }, 300);
+});
 
 $("#alertMsg .close").click(function () {
 	$('#alertMsg').slideUp();
@@ -428,8 +565,8 @@ $("#overlay .close").click(function () {
 	$('#overlay').fadeOut('slow');
 });
 
-$("#map_container #toggle_creatures, #map_container #toggle_gyms, #map_container #toggle_building, #map_container #toggle_library, #map_container #toggle_players").click(function () {
-	refreshMarkers();
+$("#map_container .items_toggles input").click(function () {
+	setClearInterval(4);
 });
 
 
@@ -442,16 +579,34 @@ $("header .user .username").click(function () {
 	}
 	else
 	{
+		if($('header .menuToggle').is(":visible"))
+			$("#map_container .items_toggles").hide("slide", { direction: "right" }, 300);
+		
 		$("header .user .submenu").slideDown();
 	}
 });
 
 function getCapturedCreature(long, latitude) {
 	$('#global').hide();
+	$('#global, header .menuToggle').show();
 	$('#map_container').fadeIn('slow');
 	$("header .menu li a").removeClass("active");
 	$("header .menu li a#mapButton").addClass("active");
 	map.setView([long, latitude], 18);
 }
 
-setInterval(refreshMarkers, 60000);
+function refreshMapInterval() {
+	intervalMap--;
+	$(".items_toggles .timerMap span").text(intervalMap);
+	
+	if(intervalMap == 0)
+	{
+		refreshMarkers();
+	}
+}
+
+function setClearInterval(seconds) {
+	intervalMap = seconds;
+}
+
+setInterval(refreshMapInterval, 1000);

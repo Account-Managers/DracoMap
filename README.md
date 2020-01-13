@@ -29,8 +29,16 @@ Demo map: (spots only remain 15 minutes) <a href="https://webpokemon.net/DracoMa
 - Connect to DB in config and load site.
 - Set `/avatars/` folder permissions to 777 / 757
 
-#### Default Login
-Username: admin<br>
+#### Default Login 1
+Username: admin1<br>
+Password: admin
+
+#### Default Login 2
+Username: admin2<br>
+Password: admin
+
+#### Default Login 3
+Username: admin3<br>
 Password: admin
 
 ### Credits

@@ -1,6 +1,6 @@
 <?php
 class Conn{	
-    protected static $db;
+  protected static $db;
 	protected static $host;
 	protected static $dbname;
 	protected static $user;
