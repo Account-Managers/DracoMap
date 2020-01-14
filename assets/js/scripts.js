@@ -156,6 +156,35 @@ function showAlert(msg, type) {
 	}
 }
 
+$(document).delegate('#settingsMapForm', 'submit', function(e){
+	e.preventDefault();
+    $.ajax({
+		type: "POST",
+		name: "login",
+		url: 'app/form/mapsettings.php',
+		data: {
+			mapcenter: $("#settingsMapCenter").val(),
+			mapsize: $("#settingsMapSize").val(),
+			hidepilars: Number($("#settingsHidePilars").is(':checked')),
+			hideobelisks: Number($("#settingsHideObelisks").is(':checked')),
+        },
+        success: function(data)
+        {
+			var eventData = data.split(';');
+			var eventName = jQuery.trim(eventData[0]);
+			var msg = eventData[1];
+			if(eventName == "error") {
+				showAlert(msg, "error");
+			}
+			else if(eventName == "success") 
+			{
+				$('#overlay').fadeOut('slow');
+				showAlert(msg, "success");
+			}
+        }
+	});
+});
+
 $(document).delegate('#settingsAvatarImageForm', 'submit', function(e){
     e.preventDefault();
 	
