@@ -10,6 +10,7 @@ var Marker = {};
 
 // CREATURES
 <?php
+
 $Creatures = $db->getQuery('SELECT * FROM creatures WHERE visible = ?', array(1));
 foreach ($Creatures as $CreatureRow) {
 	if($CreatureRow["creature"] == null || $CreatureRow["creature"] == "")
@@ -75,7 +76,18 @@ Id++;
 
 // STOPS
 <?php
-$Stops = $db->getQuery('SELECT * FROM stops');
+if (($_SESSION['hidePilars'] == 1) && ($_SESSION['hideObelisks'] == 1)) {
+	$SQL='SELECT * FROM `stops` WHERE type != "STOP" AND type != "DUNGEON_STOP" AND type != "OBELISK"';
+} elseif ($_SESSION['hidePilars'] == 1) {
+	$SQL='SELECT * FROM `stops` WHERE type != "STOP" AND type != "DUNGEON_STOP"';
+} elseif ($_SESSION['hideObelisks'] == 1) {
+	$SQL='SELECT * FROM `stops` WHERE type != "OBELISK"';
+} else {
+	$SQL='SELECT * FROM stops';
+};
+
+$Stops = $db->getQuery($SQL);
+
 foreach ($Stops as $StopsRow) {
 	$size = 45;
 	

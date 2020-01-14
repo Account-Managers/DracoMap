@@ -346,7 +346,8 @@ CREATE TABLE `players` (
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `latitude` decimal(10,6) NOT NULL,
   `longitude` decimal(10,6) NOT NULL,
-  `team` int(2) NOT NULL
+  `team` int(2) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -417,6 +418,10 @@ CREATE TABLE `users` (
   `uname` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `upass` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `usergroup` varchar(1) COLLATE utf8_unicode_ci NOT NULL,
+  `mapCenter` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '51.298, 9.459',
+  `mapSize` int(11) NOT NULL DEFAULT '15',
+  `hidePilars` tinyint(1) NOT NULL DEFAULT '1',
+  `hideObelisks` tinyint(1) NOT NULL DEFAULT '1',
   `trn_date` datetime NOT NULL,
   `url` text COLLATE utf8_unicode_ci NOT NULL,
   `lastUpload` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
@@ -430,8 +435,10 @@ CREATE TABLE `users` (
 -- Déchargement des données de la table `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `uname`, `upass`, `usergroup`, `trn_date`, `url`, `lastUpload`, `offtrades`, `reqtrades`, `registered`, `avatar`) VALUES
-(1, 'demo@demo.com', 'admin', '21232f297a57a5a743894a0e4a801fc3', '3', '0000-00-00 00:00:00', '', '', 0, 0, '0000-00-00 00:00:00', 'default_avatar.png');
+INSERT INTO `users` (`id`, `email`, `uname`, `upass`, `usergroup`, `mapCenter`, `mapSize`, `hidePilars`, `hideObelisks`, `trn_date`, `url`, `lastUpload`, `offtrades`, `reqtrades`, `registered`, `avatar`) VALUES
+(1, '', 'admin1', '21232f297a57a5a743894a0e4a801fc3', '3', '40.767, -73.976', 16, 1, 0, '0000-00-00 00:00:00', '', '', 0, 0, '0000-00-00 00:00:00', 'admin.png'),
+(2, '', 'admin2', '21232f297a57a5a743894a0e4a801fc3', '3', '40.777, -73.969', 14, 1, 1, '0000-00-00 00:00:00', '', '', 0, 0, '0000-00-00 00:00:00', 'admin.png'),
+(3, '', 'admin3', '21232f297a57a5a743894a0e4a801fc3', '3', '40.793, -73.958', 17, 0, 1, '0000-00-00 00:00:00', '', '', 0, 0, '0000-00-00 00:00:00', 'admin.png');
 
 -- --------------------------------------------------------
 
@@ -467,8 +474,7 @@ ALTER TABLE `creatures`
 ALTER TABLE `gyms`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `name` (`name`) USING BTREE,
-  ADD UNIQUE KEY `latitude` (`latitude`) USING BTREE,
-  ADD UNIQUE KEY `longitude` (`longitude`) USING BTREE;
+  ADD UNIQUE KEY `latlong` (`latitude`,`longitude`);
 
 --
 -- Index pour la table `libs`
@@ -476,8 +482,7 @@ ALTER TABLE `gyms`
 ALTER TABLE `libs`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `name` (`name`) USING BTREE,
-  ADD UNIQUE KEY `longitude` (`longitude`) USING BTREE,
-  ADD UNIQUE KEY `latitude` (`latitude`) USING BTREE;
+  ADD UNIQUE KEY `latlong` (`latitude`,`longitude`);
 
 --
 -- Index pour la table `players`
@@ -491,8 +496,7 @@ ALTER TABLE `players`
 ALTER TABLE `stops`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `name` (`name`) USING BTREE,
-  ADD UNIQUE KEY `latitude` (`latitude`) USING BTREE,
-  ADD UNIQUE KEY `longitude` (`longitude`) USING BTREE;
+  ADD UNIQUE KEY `latlong` (`latitude`,`longitude`);
 
 --
 -- Index pour la table `teams`
@@ -556,7 +560,7 @@ ALTER TABLE `usergroup`
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `user_like`

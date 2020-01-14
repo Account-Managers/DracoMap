@@ -1,11 +1,20 @@
 <?php
+session_start();
 require_once("app/database/database.php");
 require_once("includes/config.php");
 
-session_start();
 if(isset($_SESSION['login'])) {
 	$userInfo = $db->getQuery('SELECT * FROM users WHERE id=?', array($_SESSION['login']));
-}
+	$_SESSION['mapCenter'] = $userInfo[0]["mapCenter"];
+	$_SESSION['mapSize'] = $userInfo[0]["mapSize"];
+	$_SESSION['hideObelisks'] = $userInfo[0]["hideObelisks"];
+	$_SESSION['hidePilars'] = $userInfo[0]["hidePilars"];
+} else {
+	$_SESSION['mapCenter'] = $config['mapCenter'];
+	$_SESSION['mapSize'] = $config['mapSize'];
+	$_SESSION['hideObelisks'] = $config['hideObelisks'];
+	$_SESSION['hidePilars'] = $config['hidePilars'];
+};
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -80,7 +89,7 @@ if(isset($_SESSION['login'])) {
 				<div class="scroller">
 					<label>Clear map every</label>
 					<select id="toggleClear">
-						<option value="1">1 hour</option>
+						<option selected value="1">1 hour</option>
 						<option value="24">24 hours</option>
 						<option value="48">48 hours</option>
 						<option value="96">96 hours</option>
@@ -88,16 +97,18 @@ if(isset($_SESSION['login'])) {
 						<option value="999999">Infinite</option>
 					</select>
 					
-					<div class="timerClear desc">Next clear in <span>30 hours</span>.</div>
-					
+					<div class="timerClear desc">Next clear in <span>1 hours</span>.</div>
+					<br>
+					<label>Items shown on map:</label>
+					<br><br>
 					<div class="clearfix"></div>
 					
-					<input type="checkbox" class="players" checked>
+					<input type="checkbox" class="players">
 					<label>Players</label>
 					
 					<div class="clearfix"></div>
 					
-					<input type="checkbox" class="creatures" checked>
+					<input type="checkbox" class="creatures">
 					<label>Creatures</label>
 					
 					<div class="clearfix"></div>
@@ -110,8 +121,43 @@ if(isset($_SESSION['login'])) {
 					<input type="checkbox" class="librarys" checked>
 					<label>Librarys</label>
 					
+					<?php
+					if ($_SESSION['hideObelisks'] == 0) {
+						echo '<div class="clearfix"></div>';
+						echo '';
+						echo '<input type="checkbox" class="OBELISK" checked>';
+						echo '<label>Obelisk</label>';
+					};
+					?>
+					
+					<?php
+					if ($_SESSION['hidePilars'] == 0) {
+						echo '<div class="clearfix"></div>';
+						echo '';
+						echo '<input type="checkbox" class="STOP" checked>';
+						echo '<label>Stops</label>';
+						echo '';
+						echo '<div class="clearfix"></div>';
+						echo '';
+						echo '<input type="checkbox" class="DUNGEON_STOP" checked>';
+						echo '<label>Dungeon stops</label>';
+					};
+					?>
+
 					<div class="clearfix"></div>
 					
+					<input type="checkbox" class="PORTAL" checked>
+					<label>Portal</label>
+					
+					<div class="clearfix"></div>
+										
+					<input type="checkbox" class="ROOST" checked>
+					<label>Roost</label>
+					
+					<div class="clearfix"></div>
+					<br>
+					<label>Other items/stops:</label>
+					<br><br>
 					<input type="checkbox" class="ALTAR" checked>
 					<label>Altar</label>
 					
@@ -144,31 +190,6 @@ if(isset($_SESSION['login'])) {
 					
 					<input type="checkbox" class="ELEMENTAL_DUNGEON" checked>
 					<label>Elemental dungeon</label>
-					
-					<div class="clearfix"></div>
-					
-					<input type="checkbox" class="ROOST" checked>
-					<label>Roost</label>
-					
-					<div class="clearfix"></div>
-					
-					<input type="checkbox" class="OBELISK" checked>
-					<label>Obelisk</label>
-					
-					<div class="clearfix"></div>
-					
-					<input type="checkbox" class="PORTAL" checked>
-					<label>Portal</label>
-					
-					<div class="clearfix"></div>
-					
-					<input type="checkbox" class="DUNGEON_STOP" checked>
-					<label>Dungeon stop</label>
-					
-					<div class="clearfix"></div>
-
-					<input type="checkbox" class="STOP" checked>
-					<label>Stops</label>
 				</div>
 				
 				<div class="timerMap desc">Next map update in <span>60</span> seconds.</div>

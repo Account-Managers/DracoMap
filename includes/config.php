@@ -5,7 +5,12 @@
 $config['websiteName'] = "WebDraconiusGo";
 $config['websiteUrl'] = "https://webpokemon.net/DracoMap"; // without the / final
 $config['websiteAssetsUrl'] = "assets"; // without the / final - or let like that
-$config['mapCenter'] = "40.764665, -73.973184";
+
+// STANDARD FOR GUEST LOGIN
+$config['mapCenter'] = "40.777, -73.969";
+$config['mapSize'] = "14";
+$config['hidePilars'] = 0;
+$config['hideObelisks'] = 0;
 
 // CONFIG YOUR DATABASE
 $config['mysql_host'] = "localhost";

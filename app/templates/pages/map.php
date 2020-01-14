@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once("../../database/database.php");
 require_once("../../../includes/config.php");
 ?>
@@ -6,8 +7,9 @@ require_once("../../../includes/config.php");
 </div>
 
 <script>
-var map = L.map('map').setView([<?php echo $config['mapCenter']; ?>], 15);
-L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map);
+var map = L.map('map').setView([<?php echo $_SESSION['mapCenter']; ?>], <?php echo $_SESSION['mapSize']; ?>);
+//L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map);
+L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png').addTo(map);
 
 map.invalidateSize();
 </script>
