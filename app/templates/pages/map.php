@@ -8,7 +8,8 @@ require_once("../../../includes/config.php");
 
 <script>
 var map = L.map('map').setView([<?php echo $_SESSION['mapCenter']; ?>], <?php echo $_SESSION['mapSize']; ?>);
-L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map);
+//L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map);
+L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png').addTo(map);
 
 map.invalidateSize();
 </script>
