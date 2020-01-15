@@ -1,5 +1,5 @@
-var intervalClearDatabase = 1 * 60,
-	counterClear = 1 * 60,
+var intervalClearDatabase = 999999 * 60,
+	counterClear = 999999 * 60,
 	intervalMap = 60;
 	
 class MarkerClass {
@@ -141,6 +141,11 @@ function showAlert(msg, type) {
 	{
 		$("#alertMsg").removeClass();
 		$("#alertMsg").addClass("success");
+	}
+	else if(type == "info")
+	{
+		$("#alertMsg").removeClass();
+		$("#alertMsg").addClass("info");
 	}
 	
 	if ( $("#alertMsg").css('display') == 'none' ){
@@ -544,6 +549,10 @@ $(document).delegate('.like_count .like_button', 'click', function(e){
 				showAlert(msg, "success");
 				$(".leaflet-popup-content").hide();
 				refreshMarkers();
+			}
+			else if(eventName == "info") 
+			{
+				showAlert(msg, "info");
 			}
         }
 	});

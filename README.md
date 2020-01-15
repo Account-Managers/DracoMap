@@ -29,17 +29,21 @@ Demo map: (spots only remain 15 minutes) <a href="https://webpokemon.net/DracoMa
 - Connect to DB in config and load site.
 - Set `/avatars/` folder permissions to 777 / 757
 
-#### Default Login 1
+#### Default Login 1 (hidePilars, special Mapcenter- and Mapsize-Settings)
 Username: admin1<br>
 Password: admin
 
-#### Default Login 2
+#### Default Login 2 (hidePilars and hideObelisks, special Mapcenter- and Mapsize-Settings)
 Username: admin2<br>
 Password: admin
 
-#### Default Login 3
+#### Default Login 3 (hideObelisks, special Mapcenter- and Mapsize-Settings)
 Username: admin3<br>
 Password: admin
+
+### Special Login (has access to user management [still in working process])
+Username: founder<br>
+Password: founderpass06
 
 ### Credits
  - Ovb

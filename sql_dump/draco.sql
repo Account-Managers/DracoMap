@@ -394,17 +394,19 @@ INSERT INTO `teams` (`id`, `name`) VALUES
 
 CREATE TABLE `usergroup` (
   `id` int(10) NOT NULL,
-  `groupname` varchar(20) COLLATE utf8_unicode_ci NOT NULL
+  `groupname` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `description` tinytext COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Déchargement des données de la table `usergroup`
 --
 
-INSERT INTO `usergroup` (`id`, `groupname`) VALUES
-(1, 'basic'),
-(2, 'pro'),
-(3, 'admin');
+INSERT INTO `usergroup` (`id`, `groupname`, `description`) VALUES
+(1, 'basic', 'can be verified, modified/upgraded or removed by founders'),
+(2, 'pro', 'having special permissions like userlikes'),
+(3, 'admin', 'having access to database operations and all pro features'),
+(4, 'founder', 'having access to user-management and all admin features');
 
 -- --------------------------------------------------------
 
@@ -417,7 +419,7 @@ CREATE TABLE `users` (
   `email` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `uname` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `upass` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `usergroup` varchar(1) COLLATE utf8_unicode_ci NOT NULL,
+  `usergroup` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT '1',
   `mapCenter` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '40.777, -73.969',
   `mapSize` tinyint(2) NOT NULL DEFAULT '15',
   `hidePilars` tinyint(1) NOT NULL DEFAULT '1',
@@ -436,9 +438,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `email`, `uname`, `upass`, `usergroup`, `mapCenter`, `mapSize`, `hidePilars`, `hideObelisks`, `trn_date`, `url`, `lastUpload`, `offtrades`, `reqtrades`, `registered`, `avatar`) VALUES
-(1, '', 'admin1', '21232f297a57a5a743894a0e4a801fc3', '3', '40.767, -73.976', 16, 1, 0, '0000-00-00 00:00:00', '', '', 0, 0, '0000-00-00 00:00:00', 'admin.png'),
-(2, '', 'admin2', '21232f297a57a5a743894a0e4a801fc3', '3', '40.777, -73.969', 14, 1, 1, '0000-00-00 00:00:00', '', '', 0, 0, '0000-00-00 00:00:00', 'admin.png'),
-(3, '', 'admin3', '21232f297a57a5a743894a0e4a801fc3', '3', '40.793, -73.958', 17, 0, 1, '0000-00-00 00:00:00', '', '', 0, 0, '0000-00-00 00:00:00', 'admin.png');
+(1, '', 'founder', 'c26186f4a689bc88f3823d95aeb0b9b5', '4', '40.777, -73.969', 12, 1, 1, '0000-00-00 00:00:00', '', '', 0, 0, '0000-00-00 00:00:00', 'founder.png'),
+(2, '', 'admin1', '21232f297a57a5a743894a0e4a801fc3', '3', '40.767, -73.976', 16, 1, 0, '0000-00-00 00:00:00', '', '', 0, 0, '0000-00-00 00:00:00', 'admin1.png'),
+(3, '', 'admin2', '21232f297a57a5a743894a0e4a801fc3', '3', '40.777, -73.969', 14, 1, 1, '0000-00-00 00:00:00', '', '', 0, 0, '0000-00-00 00:00:00', 'admin2.png'),
+(4, '', 'admin3', '21232f297a57a5a743894a0e4a801fc3', '3', '40.793, -73.958', 17, 1, 0, '0000-00-00 00:00:00', '', '', 0, 0, '0000-00-00 00:00:00', 'admin3.png');
 
 -- --------------------------------------------------------
 
@@ -447,14 +450,10 @@ INSERT INTO `users` (`id`, `email`, `uname`, `upass`, `usergroup`, `mapCenter`, 
 --
 
 CREATE TABLE `user_like` (
-  `id` int(11) NOT NULL,
   `spot_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL
+  `user_id` int(11) NOT NULL,
+  `voted` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Index pour les tables déchargées
---
 
 --
 -- Index pour la table `bestiary`
@@ -520,11 +519,7 @@ ALTER TABLE `users`
 -- Index pour la table `user_like`
 --
 ALTER TABLE `user_like`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT pour les tables déchargées
---
+  ADD PRIMARY KEY (`spot_id`,`user_id`) USING BTREE;
 
 --
 -- AUTO_INCREMENT pour la table `creatures`
@@ -562,11 +557,6 @@ ALTER TABLE `usergroup`
 ALTER TABLE `users`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
---
--- AUTO_INCREMENT pour la table `user_like`
---
-ALTER TABLE `user_like`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

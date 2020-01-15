@@ -65,6 +65,7 @@ else if(isset($_GET["type"]) && $_GET["type"] == "all")
 	$db->executeQuery('TRUNCATE TABLE stops');
 	$db->executeQuery('TRUNCATE TABLE creatures');
 	$db->executeQuery('TRUNCATE TABLE players');
+	$db->executeQuery('TRUNCATE TABLE user_like');
 	echo "success;Database has been cleaned";
 	return;
 }

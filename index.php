@@ -51,8 +51,11 @@ if(isset($_SESSION['login'])) {
 				<div class="username"><?php echo $userInfo[0]["uname"]; ?> <i class="fas fa-caret-down"></i></div>
 				<ul class="submenu">
 					<li><a href="overlay/settings"><i class="fas fa-cog"></i> Settings</a></li>
-					<?php if($userInfo[0]["usergroup"] == 3) { ?>
+					<?php if (($userInfo[0]["usergroup"] == 3) || ($userInfo[0]["usergroup"] == 4)) { ?>
 					<li><a href="overlay/admin_settings"><i class="fas fa-wrench"></i> Admin settings</a></li>
+					<?php } ?>
+					<?php if ($userInfo[0]["usergroup"] == 4) { ?>
+					<li><a href="overlay/user_management"><i class="fas fa-wrench"></i> User Management</a></li>
 					<?php } ?>
 					<li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
 				</ul>
@@ -87,17 +90,21 @@ if(isset($_SESSION['login'])) {
 			
 			<div class="items_toggles">
 				<div class="scroller">
-					<label>Clear map every</label>
-					<select id="toggleClear">
-						<option selected value="1">1 hour</option>
-						<option value="24">24 hours</option>
-						<option value="48">48 hours</option>
-						<option value="96">96 hours</option>
-						<option value="191">191 hours</option>
-						<option value="999999">Infinite</option>
-					</select>
-					
-					<div class="timerClear desc">Next clear in <span>1 hours</span>.</div>
+					<?php
+						if (($userInfo[0]["usergroup"] == 3) || ($userInfo[0]["usergroup"] == 4)) {
+							echo '<label>Clear map every</label>';
+							echo '<select id="toggleClear">';
+							echo '	<option value="1">1 hour</option>';
+							echo '	<option value="24">24 hours</option>';
+							echo '	<option value="48">48 hours</option>';
+							echo '  <option value="96">96 hours</option>';	
+							echo '  <option value="192">192 hours</option>';	
+							echo '  <option selected value="999999">Infinite</option>';	
+							echo '</select>';
+							echo '';
+							echo '<div class="timerClear desc">Next clear in <span>1 hours</span>.</div>';
+						};
+					?>
 					<br>
 					<label>Items shown on map:</label>
 					<br><br>
@@ -121,28 +128,24 @@ if(isset($_SESSION['login'])) {
 					<input type="checkbox" class="librarys" checked>
 					<label>Librarys</label>
 					
-					<?php
-					if ($_SESSION['hideObelisks'] == 0) {
-						echo '<div class="clearfix"></div>';
-						echo '';
-						echo '<input type="checkbox" class="OBELISK" checked>';
-						echo '<label>Obelisk</label>';
-					};
-					?>
+					<?php if ($_SESSION['hideObelisks'] == 0) { ?>
+						<div class="clearfix"></div>
+						
+						<input type="checkbox" class="OBELISK" checked>
+						<label>Obelisk</label>
+					<?php }; ?>
 					
-					<?php
-					if ($_SESSION['hidePilars'] == 0) {
-						echo '<div class="clearfix"></div>';
-						echo '';
-						echo '<input type="checkbox" class="STOP" checked>';
-						echo '<label>Stops</label>';
-						echo '';
-						echo '<div class="clearfix"></div>';
-						echo '';
-						echo '<input type="checkbox" class="DUNGEON_STOP" checked>';
-						echo '<label>Dungeon stops</label>';
-					};
-					?>
+					<?php if ($_SESSION['hidePilars'] == 0) { ?>
+						<div class="clearfix"></div>
+						
+						<input type="checkbox" class="STOP" checked>
+						<label>Stops</label>
+						
+						<div class="clearfix"></div>
+						
+						<input type="checkbox" class="DUNGEON_STOP" checked>
+						<label>Dungeon stops</label>
+					<?php }; ?>
 
 					<div class="clearfix"></div>
 					

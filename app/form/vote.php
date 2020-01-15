@@ -1,36 +1,59 @@
 <?php
+session_start();
 require_once("../database/database.php");
 require_once("../../includes/config.php");
 
-session_start();
-if(!isset($_SESSION['login'])) 
-	return;
-
-if(!isset($_GET["like"]) && !isset($_GET["unlike"]))
-	return;
-
-if(!isset($_GET["id"]) || !is_numeric($_GET["id"]))
-	return;
-
-$userInfo = $db->getQuery('SELECT * FROM users WHERE id=?', array($_SESSION['login']));
-$spotInfo = $db->getQuery('SELECT * FROM spots WHERE spotid=?', array($_GET["id"]));
-if($spotInfo == null)
-	return;
-
-$countLike = $db->getQuery('SELECT * FROM user_like WHERE spot_id=? AND user_id=?', array($_GET["id"], $userInfo[0]["id"]));
-if(count($countLike) != 0)
-{
-	echo "error;You have already voted";
+if (!isset($_SESSION['login'])) {
+	echo "error;please login to vote";
 	return;
 }
 
-$db->executeQuery('INSERT INTO user_like (spot_id, user_id) VALUES (?, ?)', array($_GET["id"], $userInfo[0]["id"]));
-if(isset($_GET["like"]))
-{
-	$db->executeQuery('UPDATE spots SET good = good + 1 WHERE spotid = ?', array($_GET["id"]));
+$UserID = $_SESSION['login'];
+
+$userInfo = $db->getQuery('SELECT * FROM users WHERE id=?', array($UserID));
+if ($userInfo[0]["usergroup"] < 2) {
+	echo "error;You do not have permission to vote";
+	return;
 }
-else if(isset($_GET["unlike"]))
-{
-	$db->executeQuery('UPDATE spots SET good = good - 1 WHERE spotid = ?', array($_GET["id"]));
+
+if (!isset($_GET["like"]) && !isset($_GET["unlike"]))
+	return;
+
+if (!isset($_GET["id"]) || !is_numeric($_GET["id"]))
+	return;
+
+$SpotID = $_GET["id"];
+
+$spotInfo = $db->getQuery('SELECT * FROM creatures WHERE spotid=?', array($SpotID));
+if ($spotInfo == null) {
+	$db->executeQuery('DELETE FROM user_like WHERE spotid=?', array($SpotID));
+	return;
 }
-echo "success;Your vote has been taken into account";
+
+if (isset($_GET["like"])) {
+	$voted = 1 ;
+} else if (isset($_GET["unlike"])) {
+	$voted = -1 ;
+}
+
+$GoodCount = $spotInfo[0]['good'] + $voted;
+
+$countLike = $db->getQuery('SELECT * FROM user_like WHERE spot_id=? AND user_id=?', array($SpotID, $UserID));
+if (count($countLike) == 0) {
+	$db->executeQuery('INSERT INTO user_like (spot_id, user_id, voted) VALUES (?, ?, ?)', array($SpotID, $UserID, $voted));
+	$db->executeQuery('UPDATE creatures SET good = ? WHERE spotid = ?', array($GoodCount, $SpotID));
+	echo "success;Your new vote has been taken into account";
+	return;
+} else {	
+	$countLike2 = $db->getQuery('SELECT * FROM user_like WHERE spot_id=? AND user_id=? AND voted=?', array($SpotID, $UserID, $voted));
+	if (count($countLike2) == 0) {
+		$db->executeQuery('UPDATE creatures SET good = ? WHERE spotid=?', array($GoodCount, $SpotID));
+		$db->executeQuery('DELETE FROM user_like WHERE spot_id=? AND user_id=?', array($SpotID, $UserID));
+		echo "success;Your changing vote has been taken into account";
+		return;
+	} else {
+		echo "error;You have already voted";
+		return;
+	}
+}
+?>
