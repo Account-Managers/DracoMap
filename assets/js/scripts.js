@@ -1,5 +1,5 @@
-var intervalClearDatabase = 1 * 60,
-	counterClear = 1 * 60,
+var intervalClearDatabase = 999999 * 60,
+	counterClear = 999999 * 60,
 	intervalMap = 60;
 	
 class MarkerClass {
@@ -142,6 +142,11 @@ function showAlert(msg, type) {
 		$("#alertMsg").removeClass();
 		$("#alertMsg").addClass("success");
 	}
+	else if(type == "info")
+	{
+		$("#alertMsg").removeClass();
+		$("#alertMsg").addClass("info");
+	}
 	
 	if ( $("#alertMsg").css('display') == 'none' ){
 		$("#alertMsg .message").text(msg);
@@ -155,6 +160,35 @@ function showAlert(msg, type) {
 		});
 	}
 }
+
+$(document).delegate('#settingsMapForm', 'submit', function(e){
+	e.preventDefault();
+    $.ajax({
+		type: "POST",
+		name: "login",
+		url: 'app/form/mapsettings.php',
+		data: {
+			mapcenter: $("#settingsMapCenter").val(),
+			mapsize: $("#settingsMapSize").val(),
+			hidepilars: Number($("#settingsHidePilars").is(':checked')),
+			hideobelisks: Number($("#settingsHideObelisks").is(':checked')),
+        },
+        success: function(data)
+        {
+			var eventData = data.split(';');
+			var eventName = jQuery.trim(eventData[0]);
+			var msg = eventData[1];
+			if(eventName == "error") {
+				showAlert(msg, "error");
+			}
+			else if(eventName == "success") 
+			{
+				$('#overlay').fadeOut('slow');
+				showAlert(msg, "success");
+			}
+        }
+	});
+});
 
 $(document).delegate('#settingsAvatarImageForm', 'submit', function(e){
     e.preventDefault();
@@ -515,6 +549,10 @@ $(document).delegate('.like_count .like_button', 'click', function(e){
 				showAlert(msg, "success");
 				$(".leaflet-popup-content").hide();
 				refreshMarkers();
+			}
+			else if(eventName == "info") 
+			{
+				showAlert(msg, "info");
 			}
         }
 	});

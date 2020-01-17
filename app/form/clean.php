@@ -1,13 +1,13 @@
 <?php
+session_start();
 require_once("../database/database.php");
 require_once("../../includes/config.php");
 
-session_start();
 if(!isset($_SESSION['login'])) 
 	return;
 
 $userInfo = $db->getQuery('SELECT * FROM users WHERE id=?', array($_SESSION['login']));
-if($userInfo[0]["usergroup"] != 3)
+if($userInfo[0]["usergroup"] < 3)
 	return;
 
 if(isset($_GET["type"]) && $_GET["type"] == "pilars")
@@ -65,6 +65,7 @@ else if(isset($_GET["type"]) && $_GET["type"] == "all")
 	$db->executeQuery('TRUNCATE TABLE stops');
 	$db->executeQuery('TRUNCATE TABLE creatures');
 	$db->executeQuery('TRUNCATE TABLE players');
+	$db->executeQuery('TRUNCATE TABLE user_like');
 	echo "success;Database has been cleaned";
 	return;
 }
