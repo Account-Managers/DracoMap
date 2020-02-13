@@ -91,7 +91,7 @@ if(isset($_SESSION['login'])) {
 			<div class="items_toggles">
 				<div class="scroller">
 					<?php
-						if (($userInfo[0]["usergroup"] == 3) || ($userInfo[0]["usergroup"] == 4)) {
+						if (isset($userInfo) && (($userInfo[0]["usergroup"] == 3) || ($userInfo[0]["usergroup"] == 4))) {
 							echo '<label>Clear map every</label>';
 							echo '<select id="toggleClear">';
 							echo '	<option value="1">1 hour</option>';
