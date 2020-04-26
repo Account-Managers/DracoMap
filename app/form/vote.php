@@ -19,14 +19,14 @@ if ($userInfo[0]["usergroup"] < 2) {
 if (!isset($_GET["like"]) && !isset($_GET["unlike"]))
 	return;
 
-if (!isset($_GET["id"]) || !is_numeric($_GET["id"]))
+if (!isset($_GET["id"]))
 	return;
 
 $SpotID = $_GET["id"];
 
 $spotInfo = $db->getQuery('SELECT * FROM creatures WHERE spotid=?', array($SpotID));
 if ($spotInfo == null) {
-	$db->executeQuery('DELETE FROM user_like WHERE spotid=?', array($SpotID));
+	$db->executeQuery('DELETE FROM user_like WHERE spot_id=?', array($SpotID));
 	return;
 }
 

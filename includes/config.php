@@ -3,7 +3,7 @@
 
 // CONFIG YOUR WEBSITE
 $config['websiteName'] = "WebDraconiusGo";
-$config['websiteUrl'] = "https://webpokemon.net/DracoMap"; // without the / final
+$config['websiteUrl'] = "http://localhost/dracomap"; // without the / final
 $config['websiteAssetsUrl'] = "assets"; // without the / final - or let like that
 
 // STANDARD FOR GUEST LOGIN

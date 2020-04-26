@@ -15,7 +15,9 @@ foreach ($Creatures as $CreatureRow) {
 ?>
 	<div class="row" onclick="getCapturedCreature('<?php echo $CreatureRow["latitude"]; ?>', '<?php echo $CreatureRow["longitude"]; ?>')">
 		<div class="image"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/icons/<?php echo $infoCreatureRow[0]["id"]; ?>.png"></div>
-		<div class="name"><span class="id">#<?php echo $CreatureRow["spotid"]; ?></span> <?php echo $infoCreatureRow[0]["monster"]; ?></div>
+		<div class="name"><?php echo $infoCreatureRow[0]["monster"]; ?></div>
+		<!--TODO: add this to styles -->
+		<div align="center"><font size=2px>#<?php echo $CreatureRow["creature"]; ?></font></div>		
 		<div class="stats">
 			<div class="infos">
 				CP : <span><?php echo $CreatureRow["cp"]; ?></span><br />

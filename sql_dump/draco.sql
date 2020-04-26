@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  jeu. 02 jan. 2020 à 23:01
+-- Généré le :  sam. 25 avr. 2020 à 13:22
 -- Version du serveur :  10.1.38-MariaDB
 -- Version de PHP :  7.3.2
 
@@ -291,7 +291,7 @@ INSERT INTO `bestiary` (`gid`, `id`, `monster`) VALUES
 --
 
 CREATE TABLE `creatures` (
-  `spotid` int(6) UNSIGNED NOT NULL,
+  `spotid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `creature` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `cp` int(6) NOT NULL,
   `iv` int(3) NOT NULL,
@@ -311,12 +311,13 @@ CREATE TABLE `creatures` (
 --
 
 CREATE TABLE `gyms` (
-  `id` int(6) UNSIGNED NOT NULL,
+  `id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `latitude` decimal(10,6) NOT NULL,
   `longitude` decimal(10,6) NOT NULL,
   `team` int(2) NOT NULL,
   `type` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
+  `spotter` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -327,12 +328,13 @@ CREATE TABLE `gyms` (
 --
 
 CREATE TABLE `libs` (
-  `id` int(6) UNSIGNED NOT NULL,
+  `id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `latitude` decimal(10,6) NOT NULL,
   `longitude` decimal(10,6) NOT NULL,
   `team` int(2) NOT NULL,
   `type` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
+  `spotter` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -347,6 +349,7 @@ CREATE TABLE `players` (
   `latitude` decimal(10,6) NOT NULL,
   `longitude` decimal(10,6) NOT NULL,
   `team` int(2) NOT NULL,
+  `level` int(11) NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -357,12 +360,12 @@ CREATE TABLE `players` (
 --
 
 CREATE TABLE `stops` (
-  `id` int(6) UNSIGNED NOT NULL,
+  `id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `latitude` decimal(10,6) NOT NULL,
   `longitude` decimal(10,6) NOT NULL,
   `type` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
-  `questby` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `spotter` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -438,8 +441,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `email`, `uname`, `upass`, `usergroup`, `mapCenter`, `mapSize`, `hidePilars`, `hideObelisks`, `trn_date`, `url`, `lastUpload`, `offtrades`, `reqtrades`, `registered`, `avatar`) VALUES
-(1, '', 'founder', 'c26186f4a689bc88f3823d95aeb0b9b5', '4', '40.777, -73.969', 12, 1, 1, '0000-00-00 00:00:00', '', '', 0, 0, '0000-00-00 00:00:00', 'founder.png'),
-(2, '', 'admin1', '21232f297a57a5a743894a0e4a801fc3', '3', '40.767, -73.976', 16, 1, 0, '0000-00-00 00:00:00', '', '', 0, 0, '0000-00-00 00:00:00', 'admin1.png'),
+(1, '', 'founder', 'c26186f4a689bc88f3823d95aeb0b9b5', '4', '40.777, -73.969', 12, 0, 0, '0000-00-00 00:00:00', '', '', 0, 0, '0000-00-00 00:00:00', 'founder.png'),
+(2, '', 'admin1', '21232f297a57a5a743894a0e4a801fc3', '3', '40.767, -73.976', 16, 0, 0, '0000-00-00 00:00:00', '', '', 0, 0, '0000-00-00 00:00:00', 'admin1.png'),
 (3, '', 'admin2', '21232f297a57a5a743894a0e4a801fc3', '3', '40.777, -73.969', 14, 1, 1, '0000-00-00 00:00:00', '', '', 0, 0, '0000-00-00 00:00:00', 'admin2.png'),
 (4, '', 'admin3', '21232f297a57a5a743894a0e4a801fc3', '3', '40.793, -73.958', 17, 1, 0, '0000-00-00 00:00:00', '', '', 0, 0, '0000-00-00 00:00:00', 'admin3.png');
 
@@ -454,6 +457,28 @@ CREATE TABLE `user_like` (
   `user_id` int(11) NOT NULL,
   `voted` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `version`
+--
+
+CREATE TABLE `version` (
+  `key` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `value` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Déchargement des données de la table `version`
+--
+
+INSERT INTO `version` (`key`, `value`) VALUES
+('DB_VERSION', '4');
+
+--
+-- Index pour les tables déchargées
+--
 
 --
 -- Index pour la table `bestiary`
@@ -522,41 +547,26 @@ ALTER TABLE `user_like`
   ADD PRIMARY KEY (`spot_id`,`user_id`) USING BTREE;
 
 --
--- AUTO_INCREMENT pour la table `creatures`
+-- Index pour la table `version`
 --
-ALTER TABLE `creatures`
-  MODIFY `spotid` int(6) UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE `version`
+  ADD PRIMARY KEY (`key`);
 
 --
--- AUTO_INCREMENT pour la table `gyms`
+-- AUTO_INCREMENT pour les tables déchargées
 --
-ALTER TABLE `gyms`
-  MODIFY `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT pour la table `libs`
---
-ALTER TABLE `libs`
-  MODIFY `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT pour la table `stops`
---
-ALTER TABLE `stops`
-  MODIFY `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `usergroup`
 --
 ALTER TABLE `usergroup`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
