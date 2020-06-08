@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  mar. 02 juin 2020 à 18:44
+-- Généré le :  mar. 09 juin 2020 à 00:16
 -- Version du serveur :  10.1.38-MariaDB
 -- Version de PHP :  7.3.2
 
@@ -304,6 +304,7 @@ CREATE TABLE `creatures` (
   `creature` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `cp` int(6) NOT NULL,
   `iv` int(3) NOT NULL,
+  `purebred` tinyint(1) NOT NULL,
   `latitude` decimal(10,6) NOT NULL,
   `longitude` decimal(10,6) NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,

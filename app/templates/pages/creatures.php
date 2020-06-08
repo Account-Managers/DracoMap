@@ -12,6 +12,8 @@ foreach ($Creatures as $CreatureRow) {
 		continue;
 	
 	$infoCreatureRow = $db->getQuery('SELECT * FROM bestiary WHERE id = ? LIMIT 1', array($CreatureRow["creature"]));
+	$purebred = $CreatureRow["purebred"]
+		
 ?>
 	<div class="row" onclick="getCapturedCreature('<?php echo $CreatureRow["latitude"]; ?>', '<?php echo $CreatureRow["longitude"]; ?>')">
 		<div class="image"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/icons/<?php echo $infoCreatureRow[0]["id"]; ?>.png"></div>
