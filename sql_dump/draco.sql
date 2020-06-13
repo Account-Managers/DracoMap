@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  mar. 09 juin 2020 à 00:16
+-- Généré le :  sam. 13 juin 2020 à 21:00
 -- Version du serveur :  10.1.38-MariaDB
 -- Version de PHP :  7.3.2
 
@@ -184,7 +184,7 @@ INSERT INTO `bestiary` (`gid`, `id`, `monster`) VALUES
 (103, 'MONSTER_FIRE_NEXT_1', 'Hippfie'),
 (104, 'MONSTER_FIRE_NEXT_2', 'Mick'),
 (250, 'MONSTER_FIRE_SPR_1', 'Kitsun'),
-(251, 'MONSTER_FIRE_SPR_2', 'Nogitsun'),
+(251, 'MONSTER_FIRE_SPR_2', 'Rainbowfox'),
 (34, 'MONSTER_FIRE_XMAS_1', 'Glim'),
 (216, 'MONSTER_FIRE_XMAS_2', 'Gathos'),
 (35, 'MONSTER_FIRE_XMAS_3', 'Kobold'),
