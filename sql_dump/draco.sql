@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  sam. 13 juin 2020 à 21:00
--- Version du serveur :  10.1.38-MariaDB
+-- Généré le :  mer. 31 mars 2021 à 20:06
+-- Version du serveur :  10.5.8-MariaDB
 -- Version de PHP :  7.3.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -307,7 +307,7 @@ CREATE TABLE `creatures` (
   `purebred` tinyint(1) NOT NULL,
   `latitude` decimal(10,6) NOT NULL,
   `longitude` decimal(10,6) NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date` timestamp NOT NULL DEFAULT current_timestamp(),
   `good` int(3) NOT NULL,
   `bad` int(1) NOT NULL,
   `spotter` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
@@ -328,7 +328,7 @@ CREATE TABLE `gyms` (
   `team` int(2) NOT NULL,
   `type` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   `spotter` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -345,7 +345,7 @@ CREATE TABLE `libs` (
   `team` int(2) NOT NULL,
   `type` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   `spotter` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -360,7 +360,7 @@ CREATE TABLE `players` (
   `longitude` decimal(10,6) NOT NULL,
   `team` int(2) NOT NULL,
   `level` int(11) NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -376,7 +376,7 @@ CREATE TABLE `stops` (
   `longitude` decimal(10,6) NOT NULL,
   `type` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   `spotter` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -434,9 +434,9 @@ CREATE TABLE `users` (
   `upass` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `usergroup` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT '1',
   `mapCenter` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '40.777, -73.969',
-  `mapSize` tinyint(2) NOT NULL DEFAULT '15',
-  `hidePilars` tinyint(1) NOT NULL DEFAULT '1',
-  `hideObelisks` tinyint(1) NOT NULL DEFAULT '1',
+  `mapSize` tinyint(2) NOT NULL DEFAULT 15,
+  `hidePilars` tinyint(1) NOT NULL DEFAULT 1,
+  `hideObelisks` tinyint(1) NOT NULL DEFAULT 1,
   `trn_date` datetime NOT NULL,
   `url` text COLLATE utf8_unicode_ci NOT NULL,
   `lastUpload` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
