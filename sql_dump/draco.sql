@@ -48,7 +48,7 @@ CREATE TABLE `bestiary` (
 INSERT INTO
   `bestiary` (`gid`, `id`, `monster`)
 VALUES
-  / / == = Auto Genered - BestiaryOrdered - English - DracoMap compatible True == = / / ('1', 'MONSTER_EARTH_DEC_1', 'Cobwebby'),
+  ('1', 'MONSTER_EARTH_DEC_1', 'Cobwebby'),
   ('2', 'MONSTER_WATER_1', 'Frogus'),
   ('3', 'MONSTER_WATER_5', 'Frogissimo'),
   ('4', 'MONSTER_EARTH_1', 'Berrydillo'),
