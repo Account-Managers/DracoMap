@@ -51,5 +51,5 @@ if($_POST['password'] != $_POST['confirm_password']) {
 	return;
 }
 
-$db->executeQuery('INSERT INTO users (email, uname, upass, registered) VALUES (?, ?, ?, NOW())', array($_POST['email'], $_POST['username'], md5($_POST['password'])));
+$db->executeQuery('INSERT INTO users (email, uname, upass, registered, trn_date, url, lastUpload, offtrades, reqtrades) VALUES (?, ?, ?, NOW(), NOW(), ?, ?, ?, ?)', array($_POST['email'], $_POST['username'], password_hash($_POST['password'], PASSWORD_DEFAULT), '', '', 0, 0));
 echo "success;You can now login;";

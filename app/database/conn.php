@@ -12,7 +12,7 @@ class Conn{
                     'mysql:host='. $host .';dbname='. $dbname, 
                     $user, 
                     $password, 
-                    array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8')
+                    array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4')
                );
 
             self::$db->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
@@ -30,6 +30,6 @@ class Conn{
     }
 
     public static function closeConnection() {
-        $db=null;
+        self::$db = null;
     }
 }

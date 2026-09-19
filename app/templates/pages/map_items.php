@@ -1,108 +1,195 @@
 <?php
 require_once("../../database/database.php");
 require_once("../../../includes/config.php");
+require_once("../../../includes/helpers.php");
 session_start();
+
+$assets = $config['websiteAssetsUrl'];
+$loggedIn = isset($_SESSION['login']);
+
+// Prefetch lookup tables once instead of one query per marker (avoids N+1).
+$bestiaryById = array();
+foreach ($db->getQuery('SELECT id, monster FROM bestiary') as $item) {
+	$bestiaryById[$item["id"]] = $item["monster"];
+}
+
+$teamById = array();
+foreach ($db->getQuery('SELECT id, name FROM teams') as $team) {
+	$teamById[$team["id"]] = $team["name"];
+}
+
+$markers = array();
+
+// CREATURES
+foreach ($db->getQuery('SELECT * FROM creatures WHERE visible = ?', array(1)) as $row) {
+	if (empty($row["creature"]))
+		continue;
+
+	$monster = isset($bestiaryById[$row["creature"]]) ? $bestiaryById[$row["creature"]] : $row["creature"];
+	$icon = $assets . "/images/icons/" . $row["creature"] . ".png";
+
+	$message = '<center style="width: 180px"><img src="' . e($icon) . '" width="75">'
+		. '<hr/><b>Sniper protocols:</b><br/>'
+		. 'ACM: <a href="acm://' . e($monster) . '/' . e($row["latitude"]) . ',' . e($row["longitude"]) . '" target="_blank">Snipe this!</a><br/>'
+		. 'DracoSniper: <a href="dracosniper://' . e($monster) . '/' . e($row["latitude"]) . ',' . e($row["longitude"]) . '" target="_blank">Snipe this!</a>'
+		. '<hr/><b>' . e($monster) . '</b><br/>'
+		. 'CP : <b>' . e($row["cp"]) . '</b><br/>IV : <b>' . e($row["iv"]) . '</b>%<br/>'
+		. '<hr/>Founded the : <b>' . e(date('d/m/Y', strtotime($row["date"]))) . '</b><br/>'
+		. 'at : <b>' . e(date('h:iA', strtotime($row["date"]))) . '</b><br/>'
+		. 'by : <b>' . e($row["spotter"]) . '</b>'
+		. '<hr/>Latitude : <b>' . e($row["latitude"]) . '</b><br/>Longitude : <b>' . e($row["longitude"]) . '</b><br/>'
+		. '<a href="https://www.google.com/maps/?daddr=' . e($row["latitude"]) . ',' . e($row["longitude"]) . '" target="_blank">Google Map</a>';
+
+	if ($loggedIn) {
+		$likeClass = "";
+		if ($row["good"] != 0 && $row["good"] > 0)
+			$likeClass = "like";
+		else if ($row["good"] != 0 && $row["good"] < 0)
+			$likeClass = "unlike";
+
+		$message .= '<hr/><div class="like_count ' . $likeClass . '">'
+			. '<i class="fas fa-thumbs-up like_button" id="' . e($row["spotid"]) . '"></i> ' . e($row["good"])
+			. ' <i class="far fa-thumbs-down unlike_button" id="' . e($row["spotid"]) . '"></i></div>';
+	}
+	$message .= '</center>';
+
+	$markers[] = array(
+		"category" => "creatures",
+		"icon_url" => $icon,
+		"icon_size" => "45",
+		"lat" => $row["latitude"],
+		"long" => $row["longitude"],
+		"message" => $message,
+	);
+}
+
+// GYMS
+foreach ($db->getQuery('SELECT * FROM gyms') as $row) {
+	if ($row["team"] != "1" && $row["team"] != "2" && $row["team"] != "3")
+		continue;
+
+	$teamName = isset($teamById[$row["team"]]) ? $teamById[$row["team"]] : "";
+	$icon = $assets . "/images/gyms/" . $row["team"] . ".png";
+
+	$message = '<center style="width: 180px;"><img src="' . e($icon) . '" width="75">'
+		. '<hr/><b>' . e($row["name"]) . '</b><br/>'
+		. '<hr/>Team : <b>' . e($teamName) . '<hr/></b>'
+		. 'Founded the : <b>' . e(date('d/m/Y', strtotime($row["date"]))) . '</b><br/>'
+		. 'at : <b>' . e(date('h:iA', strtotime($row["date"]))) . '</b><br/>'
+		. 'by : <b>' . e($row["spotter"]) . '</b></center>';
+
+	$markers[] = array(
+		"category" => "gym",
+		"icon_url" => $icon,
+		"icon_size" => "50",
+		"lat" => $row["latitude"],
+		"long" => $row["longitude"],
+		"message" => $message,
+	);
+}
+
+// LIBS
+foreach ($db->getQuery('SELECT * FROM libs') as $row) {
+	if ($row["team"] != "1" && $row["team"] != "2" && $row["team"] != "3")
+		continue;
+
+	$teamName = isset($teamById[$row["team"]]) ? $teamById[$row["team"]] : "";
+	$icon = $assets . "/images/libs/" . $row["team"] . ".png";
+
+	$message = '<center style="width: 180px;"><img src="' . e($icon) . '" width="75">'
+		. '<hr/><b>' . e($row["name"]) . '</b><br/>'
+		. '<hr/>Team : <b>' . e($teamName) . '</b>'
+		. '<hr/>Founded the : <b>' . e(date('d/m/Y', strtotime($row["date"]))) . '</b><br/>'
+		. 'at : <b>' . e(date('h:iA', strtotime($row["date"]))) . '</b><br/>'
+		. 'by : <b>' . e($row["spotter"]) . '</b></center>';
+
+	$markers[] = array(
+		"category" => "librarys",
+		"icon_url" => $icon,
+		"icon_size" => "50",
+		"lat" => $row["latitude"],
+		"long" => $row["longitude"],
+		"message" => $message,
+	);
+}
+
+// PLAYERS
+foreach ($db->getQuery('SELECT * FROM players') as $row) {
+	if ($row["team"] != "1" && $row["team"] != "2" && $row["team"] != "3")
+		continue;
+
+	$teamName = isset($teamById[$row["team"]]) ? $teamById[$row["team"]] : "";
+	$icon = $assets . "/images/player.png";
+
+	$message = '<center style="width: 180px;"><img src="' . e($icon) . '" width="75">'
+		. '<hr/><b>' . e($row["name"]) . ' Lv: ' . e($row["level"]) . '</b><br/>'
+		. e($row["latitude"]) . ', ' . e($row["longitude"])
+		. '<hr/>Team : <b>' . e($teamName) . '</b></center>';
+
+	$markers[] = array(
+		"category" => "players",
+		"icon_url" => $icon,
+		"icon_size" => "50",
+		"lat" => $row["latitude"],
+		"long" => $row["longitude"],
+		"message" => $message,
+	);
+}
+
+// STOPS
+if (($_SESSION['hidePilars'] == 1) && ($_SESSION['hideObelisks'] == 1)) {
+	$SQL = 'SELECT * FROM `stops` WHERE type != "STOP" AND type != "DUNGEON_STOP" AND type != "OBELISK"';
+} elseif ($_SESSION['hidePilars'] == 1) {
+	$SQL = 'SELECT * FROM `stops` WHERE type != "STOP" AND type != "DUNGEON_STOP"';
+} elseif ($_SESSION['hideObelisks'] == 1) {
+	$SQL = 'SELECT * FROM `stops` WHERE type != "OBELISK"';
+} else {
+	$SQL = 'SELECT * FROM stops';
+}
+
+foreach ($db->getQuery($SQL) as $row) {
+	$size = 45;
+	if ($row["type"] == "STOP" || $row["type"] == "DUNGEON_STOP")
+		$size = 25;
+
+	$icon = $assets . "/images/stops/" . $row["type"] . ".png";
+
+	$message = '<center style="width: 180px;"><img src="' . e($icon) . '" width="75">'
+		. '<hr/><b>' . e($row["name"]) . '</b>'
+		. '<hr/>Founded the : <b>' . e(date('d/m/Y', strtotime($row["date"]))) . '</b><br/>'
+		. 'at : <b>' . e(date('h:iA', strtotime($row["date"]))) . '</b><br/>'
+		. 'by : <b>' . e($row["spotter"]) . '</b></center>';
+
+	$markers[] = array(
+		"category" => $row["type"],
+		"icon_url" => $icon,
+		"icon_size" => (string)$size,
+		"lat" => $row["latitude"],
+		"long" => $row["longitude"],
+		"message" => $message,
+	);
+}
+
+$markerJson = json_encode($markers, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE);
+if ($markerJson === false)
+	$markerJson = '[]';
 ?>
 <script>
 var Id = 0;
 var countId = 0;
 var Marker = {};
 
-// CREATURES
-<?php
-$Creatures = $db->getQuery('SELECT * FROM creatures WHERE visible = ?', array(1));
-foreach ($Creatures as $CreatureRow) {
-	if($CreatureRow["creature"] == null || $CreatureRow["creature"] == "")
-		continue;
-	
-	$infoCreatureRow = $db->getQuery('SELECT * FROM bestiary WHERE id = ? LIMIT 1', array($CreatureRow["creature"]));
-?>
+var markerData = <?php echo $markerJson; ?>;
+
+markerData.forEach(function(data) {
 	Id++;
-	var marker = new MarkerClass({ category : "creatures", icon_url : "<?php echo $config['websiteAssetsUrl']; ?>/images/icons/<?php echo $infoCreatureRow[0]["id"]; ?>.png", icon_size : "45", lat: "<?php echo $CreatureRow["latitude"]; ?>", long: "<?php echo $CreatureRow["longitude"]; ?>", message: '<center style="width: 180px"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/icons/<?php echo $infoCreatureRow[0]["id"]; ?>.png" width="75"><hr/><b>Sniper protocols:</b><br/>ACM: <a href="acm://<?php echo $infoCreatureRow[0]["monster"]; ?>/<?php echo $CreatureRow["latitude"]; ?>,<?php echo $CreatureRow["longitude"]; ?>" target="_blank">Snipe this!</a><br/>DracoSniper: <a href="dracosniper://<?php echo $infoCreatureRow[0]["monster"]; ?>/<?php echo $CreatureRow["latitude"]; ?>,<?php echo $CreatureRow["longitude"]; ?>" target="_blank">Snipe this!</a><hr/><b><?php echo $infoCreatureRow[0]["monster"]; ?></b><br/>CP : <b><?php echo $CreatureRow["cp"]; ?></b><br/>IV : <b><?php echo $CreatureRow["iv"]; ?></b>%<br/><hr/>Founded the : <b><?php echo date('d/m/Y', strtotime($CreatureRow["date"])); ?></b><br/>at : <b><?php echo date('h:iA', strtotime($CreatureRow["date"])); ?></b><br/>by : <b><?php echo $CreatureRow["spotter"]; ?></b><hr/>Latitude : <b><?php echo $CreatureRow["latitude"]; ?></b><br/>Longitude : <b><?php echo $CreatureRow["longitude"]; ?></b><br/><a href="https://www.google.com/maps/?daddr=<?php echo $CreatureRow["latitude"]; ?>,<?php echo $CreatureRow["longitude"]; ?>" target="_blank">Google Map</a><?php if(isset($_SESSION['login'])) { ?><hr/><div class="like_count <?php if($CreatureRow["good"] != 0 && $CreatureRow["good"] > 0) { echo "like"; } else if($CreatureRow["good"] != 0 && $CreatureRow["good"] < 0) { echo "unlike"; } ?>"><i class="fas fa-thumbs-up like_button" id="<?php echo $CreatureRow["spotid"]; ?>"></i> <?php echo $CreatureRow["good"]; ?> <i class="far fa-thumbs-down unlike_button" id="<?php echo $CreatureRow["spotid"]; ?>"></i></div><?php } ?></center>' });
-	Marker[Id] = marker;
-<?php
-}
-?>
-
-// GYMS
-<?php
-$Gyms = $db->getQuery('SELECT * FROM gyms');
-foreach ($Gyms as $GymsRow) {
-	if($GymsRow["team"] != "1" && $GymsRow["team"] != "2" && $GymsRow["team"] != "3")
-		continue;
-	
-	$teamInfo = $db->getQuery('SELECT * FROM teams WHERE id = ? LIMIT 1', array($GymsRow["team"]));
-?>
-	Id++;
-	var marker = new MarkerClass({ category : "gym", icon_url : "<?php echo $config['websiteAssetsUrl']; ?>/images/gyms/<?php echo $GymsRow["team"]; ?>.png", icon_size : "50", lat: "<?php echo $GymsRow["latitude"]; ?>", long: "<?php echo $GymsRow["longitude"]; ?>", message: '<center style="width: 180px;"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/gyms/<?php echo $GymsRow["team"]; ?>.png" width="75"><hr/><b><?php echo $GymsRow["name"]; ?></b><br/><hr/>Team : <b><?php echo $teamInfo[0]["name"]; ?><hr/></b>Founded the : <b><?php echo date('d/m/Y', strtotime($GymsRow["date"])); ?></b><br/>at : <b><?php echo date('h:iA', strtotime($GymsRow["date"])); ?></b><br/>by : <b><?php echo $GymsRow["spotter"]; ?></b></center>'});
-	Marker[Id] = marker;
-<?php
-}
-?>
-
-// LIBS
-<?php
-$Libs = $db->getQuery('SELECT * FROM libs');
-foreach ($Libs as $LibsRow) {
-	if($LibsRow["team"] != "1" && $LibsRow["team"] != "2" && $LibsRow["team"] != "3")
-		continue;
-	
-	$teamInfo = $db->getQuery('SELECT * FROM teams WHERE id = ? LIMIT 1', array($LibsRow["team"]));
-?>
-	Id++;
-	var marker = new MarkerClass({ category : "librarys", icon_url : "<?php echo $config['websiteAssetsUrl']; ?>/images/libs/<?php echo $LibsRow["team"]; ?>.png", icon_size : "50", lat: "<?php echo $LibsRow["latitude"]; ?>", long: "<?php echo $LibsRow["longitude"]; ?>", message: '<center style="width: 180px;"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/libs/<?php echo $LibsRow["team"]; ?>.png" width="75"><hr/><b><?php echo $LibsRow["name"]; ?></b><br/><hr/>Team : <b><?php echo $teamInfo[0]["name"]; ?></b><hr/>Founded the : <b><?php echo date('d/m/Y', strtotime($LibsRow["date"])); ?></b><br/>at : <b><?php echo date('h:iA', strtotime($LibsRow["date"])); ?></b><br/>by : <b><?php echo $LibsRow["spotter"]; ?></b></center>'});
-	Marker[Id] = marker;
-<?php
-}
-?>
-
-// Players
-<?php
-$Players = $db->getQuery('SELECT * FROM players');
-foreach ($Players as $PlayersRow) {
-	if($PlayersRow["team"] != "1" && $PlayersRow["team"] != "2" && $PlayersRow["team"] != "3")
-		continue;
-	
-	$teamInfo = $db->getQuery('SELECT * FROM teams WHERE id = ? LIMIT 1', array($PlayersRow["team"]));
-?>
-Id++;
-	var marker = new MarkerClass({ category : "players", icon_url : "<?php echo $config['websiteAssetsUrl']; ?>/images/player.png", icon_size : "50", lat: "<?php echo $PlayersRow["latitude"]; ?>", long: "<?php echo $PlayersRow["longitude"]; ?>", message: '<center style="width: 180px;"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/player.png" width="75"><hr/><b><?php echo $PlayersRow["name"]; ?> Lv: <?php echo $PlayersRow["level"]; ?></b><br/><?php echo $PlayersRow["latitude"]; ?>, <?php echo $PlayersRow["longitude"]; ?><hr/>Team : <b><?php echo $teamInfo[0]["name"]; ?></b></center>'});
-	Marker[Id] = marker;
-<?php
-}
-?>
-
-// STOPS
-<?php
-if (($_SESSION['hidePilars'] == 1) && ($_SESSION['hideObelisks'] == 1)) {
-	$SQL='SELECT * FROM `stops` WHERE type != "STOP" AND type != "DUNGEON_STOP" AND type != "OBELISK"';
-} elseif ($_SESSION['hidePilars'] == 1) {
-	$SQL='SELECT * FROM `stops` WHERE type != "STOP" AND type != "DUNGEON_STOP"';
-} elseif ($_SESSION['hideObelisks'] == 1) {
-	$SQL='SELECT * FROM `stops` WHERE type != "OBELISK"';
-} else {
-	$SQL='SELECT * FROM stops';
-};
-
-$Stops = $db->getQuery($SQL);
-
-foreach ($Stops as $StopsRow) {
-	$size = 45;
-	
-	if($StopsRow["type"] == "STOP" || $StopsRow["type"] == "DUNGEON_STOP")
-		$size = 25;
-?>
-	Id++;
-	var marker = new MarkerClass({ category : "<?php echo $StopsRow["type"]; ?>", icon_url : "<?php echo $config['websiteAssetsUrl']; ?>/images/stops/<?php echo $StopsRow["type"]; ?>.png", icon_size : <?php echo $size; ?>, lat: "<?php echo $StopsRow["latitude"]; ?>", long: "<?php echo $StopsRow["longitude"]; ?>", message: '<center style="width: 180px;"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/stops/<?php echo $StopsRow["type"]; ?>.png" width="75"><hr/><b><?php echo $StopsRow["name"]; ?></b><hr/>Founded the : <b><?php echo date('d/m/Y', strtotime($StopsRow["date"])); ?></b><br/>at : <b><?php echo date('h:iA', strtotime($StopsRow["date"])); ?></b><br/>by : <b><?php echo $StopsRow["spotter"]; ?></b></center>'});
-	Marker[Id] = marker;
-<?php
-}
-?>
+	Marker[Id] = new MarkerClass(data);
+});
 
 async function loadMarker() {
 	countId++;
 	var marker = Marker[countId];
-	
+
 	if(marker != null)
 	{
 		await marker.init(function() {

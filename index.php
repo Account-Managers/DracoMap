@@ -2,9 +2,18 @@
 session_start();
 require_once("app/database/database.php");
 require_once("includes/config.php");
+require_once("includes/helpers.php");
 
+$userInfo = null;
 if(isset($_SESSION['login'])) {
 	$userInfo = $db->getQuery('SELECT * FROM users WHERE id=?', array($_SESSION['login']));
+	if(count($userInfo) == 0) {
+		unset($_SESSION['login']);
+		$userInfo = null;
+	}
+}
+
+if($userInfo !== null) {
 	$_SESSION['mapCenter'] = $userInfo[0]["mapCenter"];
 	$_SESSION['mapSize'] = $userInfo[0]["mapSize"];
 	$_SESSION['hideObelisks'] = $userInfo[0]["hideObelisks"];
@@ -14,22 +23,22 @@ if(isset($_SESSION['login'])) {
 	$_SESSION['mapSize'] = $config['mapSize'];
 	$_SESSION['hideObelisks'] = $config['hideObelisks'];
 	$_SESSION['hidePilars'] = $config['hidePilars'];
-};
+}
 ?>
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title><?php echo $config['websiteName']; ?></title>
-		<link rel="icon" type="image/png" href="<?php echo $config['websiteAssetsUrl']; ?>/images/favicon.png" />
-		<link rel="stylesheet" href="<?php echo $config['websiteAssetsUrl']; ?>/css/styles.css" type="text/css">
-		<link rel="stylesheet" href="<?php echo $config['websiteAssetsUrl']; ?>/css/leaflet.css" type="text/css">
-		<link rel="stylesheet" href="<?php echo $config['fontAwesomeStyle']; ?>" type="text/css">
+		<title><?php echo e($config['websiteName']); ?></title>
+		<link rel="icon" type="image/png" href="<?php echo e($config['websiteAssetsUrl']); ?>/images/favicon.png" />
+		<link rel="stylesheet" href="<?php echo e($config['websiteAssetsUrl']); ?>/css/styles.css" type="text/css">
+		<link rel="stylesheet" href="<?php echo e($config['websiteAssetsUrl']); ?>/css/leaflet.css" type="text/css">
+		<link rel="stylesheet" href="<?php echo e($config['fontAwesomeStyle']); ?>" type="text/css">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald|Open+Sans|Roboto" type="text/css">
 	</head>
 	
 	<body>
 		<header>
-			<div class="logo"><img src="<?php echo $config['websiteAssetsUrl']; ?>/images/logo.png"></div>
+			<div class="logo"><img src="<?php echo e($config['websiteAssetsUrl']); ?>/images/logo.png"></div>
 			
 			<ul class="menu">
 				<li><a href="#" class="active" id="mapButton"><i class="fas fa-map-pin"></i> Map</a></li>
@@ -39,7 +48,7 @@ if(isset($_SESSION['login'])) {
 			
 			<div class="user">
 				<div class="menuToggle"><i class="fas fa-cog"></i></div>
-				<?php if(!isset($_SESSION['login'])) { ?>
+				<?php if($userInfo === null) { ?>
 				<div class="avatar"><img src="avatars/default_avatar.png"></div>
 				<div class="username">Guest <i class="fas fa-caret-down"></i></div>
 				<ul class="submenu">
@@ -47,8 +56,8 @@ if(isset($_SESSION['login'])) {
 					<li><a href="overlay/register"><i class="fas fa-user-plus"></i> Register</a></li>
 				</ul>
 				<?php } else { ?>
-				<div class="avatar"><img src="avatars/<?php echo $userInfo[0]["avatar"]; ?>"></div>
-				<div class="username"><?php echo $userInfo[0]["uname"]; ?> <i class="fas fa-caret-down"></i></div>
+				<div class="avatar"><img src="avatars/<?php echo e($userInfo[0]["avatar"]); ?>"></div>
+				<div class="username"><?php echo e($userInfo[0]["uname"]); ?> <i class="fas fa-caret-down"></i></div>
 				<ul class="submenu">
 					<li><a href="overlay/settings"><i class="fas fa-cog"></i> Settings</a></li>
 					<?php if (($userInfo[0]["usergroup"] == 3) || ($userInfo[0]["usergroup"] == 4)) { ?>
@@ -91,7 +100,7 @@ if(isset($_SESSION['login'])) {
 			<div class="items_toggles">
 				<div class="scroller">
 					<?php
-						if (isset($userInfo) && (($userInfo[0]["usergroup"] == 3) || ($userInfo[0]["usergroup"] == 4))) {
+						if ($userInfo !== null && (($userInfo[0]["usergroup"] == 3) || ($userInfo[0]["usergroup"] == 4))) {
 							echo '<label>Clear map every</label>';
 							echo '<select id="toggleClear">';
 							echo '	<option value="1">1 hour</option>';
@@ -201,8 +210,8 @@ if(isset($_SESSION['login'])) {
 		
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha256-KM512VNnjElC30ehFwehXjx1YCHPiQkOPmqnrWtpccM=" crossorigin="anonymous"></script>
-		<script src="<?php echo $config['websiteAssetsUrl']; ?>/js/scripts.js"></script>
-		<script src="<?php echo $config['websiteAssetsUrl']; ?>/js/leaflet.js"></script>
+		<script src="<?php echo e($config['websiteAssetsUrl']); ?>/js/scripts.js"></script>
+		<script src="<?php echo e($config['websiteAssetsUrl']); ?>/js/leaflet.js"></script>
 
 		<script>
 		$(document).ready(function() {

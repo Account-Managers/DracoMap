@@ -14,7 +14,8 @@ if(empty($_POST['last_password']) || empty($_POST['password']) || empty($_POST['
 	return;
 }
 
-if(md5($_POST['last_password']) != $userInfo[0]["upass"]) {
+$storedHash = $userInfo[0]["upass"];
+if(!password_verify($_POST['last_password'], $storedHash) && $storedHash !== md5($_POST['last_password'])) {
 	echo "error;Your current password is incorrect";
 	return;
 }
@@ -34,5 +35,5 @@ if($_POST['password'] != $_POST['confirm_password']) {
 	return;
 }
 
-$db->executeQuery('UPDATE users SET upass = ? WHERE id = ? LIMIT 1', array(md5($_POST['password']), $_SESSION['login']));
+$db->executeQuery('UPDATE users SET upass = ? WHERE id = ? LIMIT 1', array(password_hash($_POST['password'], PASSWORD_DEFAULT), $_SESSION['login']));
 echo "success;Your password has been changed";

@@ -20,7 +20,8 @@ class Database{
             self::$queryCount += 1;
             return $result;
         } catch(Exception $e) {
-            die($e->getMessage());
+            error_log('Database error: ' . $e->getMessage());
+            die('error;A database error occurred');
         }
     }
 	
@@ -31,7 +32,8 @@ class Database{
             $statement->setFetchMode(PDO::FETCH_ASSOC);
 			$statement->closeCursor();
         } catch(Exception $e) {
-            die($e->getMessage());
+            error_log('Database error: ' . $e->getMessage());
+            die('error;A database error occurred');
         }
     }
 	
@@ -47,7 +49,8 @@ class Database{
 			self::$queryCount += 1;
 			return $result;
 		} catch(Exception $e) {
-			die($e->getMessage());
+			error_log('Database error: ' . $e->getMessage());
+			die('error;A database error occurred');
 		}
 	}
 	

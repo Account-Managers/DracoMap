@@ -2,22 +2,25 @@
 session_start();
 require_once("../../database/database.php");
 require_once("../../../includes/config.php");
+require_once("../../../includes/helpers.php");
 
 if(!isset($_SESSION['login']))
 	return;
 
 $userInfo = $db->getQuery('SELECT * FROM users WHERE id=?', array($_SESSION['login']));
+if(count($userInfo) == 0)
+	return;
 ?>
 
 <h1>Change my username</h1>
 <form id="settingsUsernameForm">
-	<input type="text" id="settingsUsername" placeholder="Username" value="<?php echo $userInfo[0]["uname"]; ?>" maxlength="20"></input>
+	<input type="text" id="settingsUsername" placeholder="Username" value="<?php echo e($userInfo[0]["uname"]); ?>" maxlength="20"></input>
 	<input type="submit" id="settingsUsernameButton" value="Edit my username">
 </form>
 
 <h1>Change my email</h1>
 <form id="settingsEmailForm">
-	<input type="text" id="settingsEmail" placeholder="Email" value="<?php echo $userInfo[0]["email"]; ?>"></input>
+	<input type="text" id="settingsEmail" placeholder="Email" value="<?php echo e($userInfo[0]["email"]); ?>"></input>
 	<input type="submit" id="settingsEmailButton" value="Edit my email">
 </form>
 
@@ -43,7 +46,7 @@ $userInfo = $db->getQuery('SELECT * FROM users WHERE id=?', array($_SESSION['log
       	<label for="settingsMapCenter">Map Center when reloading the map:</label>
       </td>
       <td align="right" valign="center" width="150px">
-      	<input type="text" id="settingsMapCenter" placeholder="40.777, -73.969" value="<?php echo $_SESSION["mapCenter"]; ?>" maxlength="20"></input>
+      	<input type="text" id="settingsMapCenter" placeholder="40.777, -73.969" value="<?php echo e($_SESSION["mapCenter"]); ?>" maxlength="20"></input>
       </td>
     </tr>
     <tr>
@@ -51,7 +54,7 @@ $userInfo = $db->getQuery('SELECT * FROM users WHERE id=?', array($_SESSION['log
       	<label for="settingsMapSize">Map Size when reloading the map:</label>
       </td>
       <td align="right" valign="center" width="150px">
-      	<input type="number" id="settingsMapSize" min="1" max="20" value="<?php echo $_SESSION["mapSize"]; ?>"></input>
+      	<input type="number" id="settingsMapSize" min="1" max="20" value="<?php echo e($_SESSION["mapSize"]); ?>"></input>
       </td>
     </tr>
     <tr>

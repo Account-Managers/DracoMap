@@ -19,10 +19,18 @@ if(count($stmt) == 0)
 	return;
 }
 
-if(md5($_POST['password']) != $stmt[0]["upass"]) {
+$storedHash = $stmt[0]["upass"];
+$passwordOk = password_verify($_POST['password'], $storedHash);
+if(!$passwordOk && $storedHash === md5($_POST['password'])) {
+	$passwordOk = true;
+	$db->executeQuery('UPDATE users SET upass = ? WHERE id = ? LIMIT 1', array(password_hash($_POST['password'], PASSWORD_DEFAULT), $stmt[0]["id"]));
+}
+
+if(!$passwordOk) {
 	echo "error;Password invalid";
 	return;
 }
 
+session_regenerate_id(true);
 $_SESSION['login'] = $stmt[0]["id"];
 echo "success";
