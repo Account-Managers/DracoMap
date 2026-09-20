@@ -46,8 +46,8 @@ foreach ($db->getQuery('SELECT * FROM creatures WHERE visible = ?', array(1)) as
 		. '<hr/>Founded the : <b>' . e(date('d/m/Y', strtotime($row["date"]))) . '</b><br/>'
 		. 'at : <b>' . e(date('h:iA', strtotime($row["date"]))) . '</b><br/>'
 		. 'by : <b>' . e($row["spotter"]) . '</b>'
-		. '<hr/>Latitude : <b>' . e($row["latitude"]) . '</b><br/>Longitude : <b>' . e($row["longitude"]) . '</b><br/>'
-		. '<a href="https://www.google.com/maps/?daddr=' . e($row["latitude"]) . ',' . e($row["longitude"]) . '" target="_blank">Google Map</a>';
+		. '<hr/>Coords: <b>' . e($row["latitude"]) . ', ' . e($row["longitude"]) . '</b>'
+		. '<br/><a href="https://www.google.com/maps/?daddr=' . e($row["latitude"]) . ',' . e($row["longitude"]) . '" target="_blank">Google Map</a>';
 
 	if ($loggedIn) {
 		$likeClass = "";
@@ -85,7 +85,9 @@ foreach ($db->getQuery('SELECT * FROM gyms') as $row) {
 		. '<hr/>Team : <b>' . e($teamName) . '<hr/></b>'
 		. 'Founded the : <b>' . e(date('d/m/Y', strtotime($row["date"]))) . '</b><br/>'
 		. 'at : <b>' . e(date('h:iA', strtotime($row["date"]))) . '</b><br/>'
-		. 'by : <b>' . e($row["spotter"]) . '</b></center>';
+		. 'by : <b>' . e($row["spotter"]) . '</b>'
+		. '<hr/>Coords: <b>' . e($row["latitude"]) . ', ' . e($row["longitude"]) . '</b>'
+		. '<br/><a href="https://www.google.com/maps/?daddr=' . e($row["latitude"]) . ',' . e($row["longitude"]) . '" target="_blank">Google Map</a></center>';
 
 	$markers[] = array(
 		"category" => "gym",
@@ -110,7 +112,9 @@ foreach ($db->getQuery('SELECT * FROM libs') as $row) {
 		. '<hr/>Team : <b>' . e($teamName) . '</b>'
 		. '<hr/>Founded the : <b>' . e(date('d/m/Y', strtotime($row["date"]))) . '</b><br/>'
 		. 'at : <b>' . e(date('h:iA', strtotime($row["date"]))) . '</b><br/>'
-		. 'by : <b>' . e($row["spotter"]) . '</b></center>';
+		. 'by : <b>' . e($row["spotter"]) . '</b>'
+		. '<hr/>Coords: <b>' . e($row["latitude"]) . ', ' . e($row["longitude"]) . '</b>'
+		. '<br/><a href="https://www.google.com/maps/?daddr=' . e($row["latitude"]) . ',' . e($row["longitude"]) . '" target="_blank">Google Map</a></center>';
 
 	$markers[] = array(
 		"category" => "librarys",
@@ -131,9 +135,10 @@ foreach ($db->getQuery('SELECT * FROM players') as $row) {
 	$icon = $assets . "/images/player.png";
 
 	$message = '<center style="width: 180px;"><img src="' . e($icon) . '" width="75">'
-		. '<hr/><b>' . e($row["name"]) . ' Lv: ' . e($row["level"]) . '</b><br/>'
-		. e($row["latitude"]) . ', ' . e($row["longitude"])
-		. '<hr/>Team : <b>' . e($teamName) . '</b></center>';
+		. '<hr/><b>' . e($row["name"]) . ' Lv: ' . e($row["level"]) . '</b>'
+		. '<hr/>Team : <b>' . e($teamName) . '</b>'
+		. '<hr/>Coords: <b>' . e($row["latitude"]) . ', ' . e($row["longitude"]) . '</b>'
+		. '<br/><a href="https://www.google.com/maps/?daddr=' . e($row["latitude"]) . ',' . e($row["longitude"]) . '" target="_blank">Google Map</a></center>';
 
 	$markers[] = array(
 		"category" => "players",
@@ -167,7 +172,9 @@ foreach ($db->getQuery($SQL) as $row) {
 		. '<hr/><b>' . e(cleanMarkerName($row["name"])) . '</b>'
 		. '<hr/>Founded the : <b>' . e(date('d/m/Y', strtotime($row["date"]))) . '</b><br/>'
 		. 'at : <b>' . e(date('h:iA', strtotime($row["date"]))) . '</b><br/>'
-		. 'by : <b>' . e($row["spotter"]) . '</b></center>';
+		. 'by : <b>' . e($row["spotter"]) . '</b>'
+		. '<hr/>Coords: <b>' . e($row["latitude"]) . ', ' . e($row["longitude"]) . '</b>'
+		. '<br/><a href="https://www.google.com/maps/?daddr=' . e($row["latitude"]) . ',' . e($row["longitude"]) . '" target="_blank">Google Map</a></center>';
 
 	$markers[] = array(
 		"category" => $row["type"],
