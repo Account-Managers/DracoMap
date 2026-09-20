@@ -119,12 +119,12 @@ if($userInfo !== null) {
 					<br><br>
 					<div class="clearfix"></div>
 					
-					<input type="checkbox" class="players">
+					<input type="checkbox" class="players" checked>
 					<label>Players</label>
 					
 					<div class="clearfix"></div>
 					
-					<input type="checkbox" class="creatures">
+					<input type="checkbox" class="creatures" checked>
 					<label>Creatures</label>
 					
 					<div class="clearfix"></div>

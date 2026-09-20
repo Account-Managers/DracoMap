@@ -7,8 +7,8 @@ $config['websiteUrl'] = "https://dracomap.mankobot.com"; // without the / final
 $config['websiteAssetsUrl'] = "assets"; // without the / final - or let like that
 
 // STANDARD FOR GUEST LOGIN
-$config['mapCenter'] = "40.777, -73.969";
-$config['mapSize'] = "14";
+$config['mapCenter'] = "40.772675, -73.972021";
+$config['mapSize'] = "18";
 $config['hidePilars'] = 0;
 $config['hideObelisks'] = 0;
 

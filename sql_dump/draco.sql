@@ -563,6 +563,11 @@ INSERT INTO `users` (
   'admin3.png'
 );
 
+UPDATE `users`                                                                                                                                         
+SET `mapCenter` = '40.772675, -73.972021',                                                                                                                
+`mapSize`   = 18                                                                                                                                
+WHERE `uname` IN ('admin1', 'admin2', 'admin3', 'founder');
+  
 -- --------------------------------------------------------
 -- Table: user_like
 -- --------------------------------------------------------

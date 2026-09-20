@@ -18,12 +18,23 @@ class MarkerClass {
 			iconSize: [this.icon_size, this.icon_size]
 		});
 		
-		marker = await new L.marker([parseFloat(this.lat), parseFloat(this.long)],{
+		var lat = parseFloat(this.lat);
+		var long = parseFloat(this.long);
+		
+		if(!isFinite(lat) || !isFinite(long))
+		{
+			if(typeof callback == "function")
+				callback();
+			return;
+		}
+		
+		var marker = new L.marker([lat, long],{
 			icon: image
 		}).bindPopup(this.message);
 		
 		await map.addLayer(marker);
-		marker._icon.classList.add(this.category);
+		if(marker._icon)
+			marker._icon.classList.add(this.category);
 		
 		var thisClass = this;
 		
@@ -34,7 +45,8 @@ class MarkerClass {
 			}
 		});
 		
-		callback();
+		if(typeof callback == "function")
+			callback();
 	}
 }
 	
@@ -624,13 +636,13 @@ $("header .user .username").click(function () {
 	}
 });
 
-function getCapturedCreature(long, latitude) {
+function getCapturedCreature(latitude, longitude) {
 	$('#global').hide();
 	$('#global, header .menuToggle').show();
 	$('#map_container').fadeIn('slow');
 	$("header .menu li a").removeClass("active");
 	$("header .menu li a#mapButton").addClass("active");
-	map.setView([long, latitude], 18);
+	map.setView([parseFloat(latitude), parseFloat(longitude)], 18);
 }
 
 function refreshMapInterval() {
