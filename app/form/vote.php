@@ -25,7 +25,7 @@ if (!isset($_GET["id"]))
 $SpotID = $_GET["id"];
 
 $spotInfo = $db->getQuery('SELECT * FROM creatures WHERE spotid=?', array($SpotID));
-if ($spotInfo == null) {
+if (count($spotInfo) == 0) {
 	$db->executeQuery('DELETE FROM user_like WHERE spot_id=?', array($SpotID));
 	return;
 }

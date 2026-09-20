@@ -20,6 +20,15 @@ foreach ($db->getQuery('SELECT id, name FROM teams') as $team) {
 
 $markers = array();
 
+// Rows imported from scanners carry an HTML coordinate suffix in `name`
+// (e.g. 'Arena <br/> [40.76326086, -73.97623128]'). Keep only the clean label.
+if (!function_exists('cleanMarkerName')) {
+	function cleanMarkerName($name) {
+		$name = preg_replace('/<br\s*\/?>\s*\[[^\]]*\]\s*$/i', '', (string)$name);
+		return trim($name);
+	}
+}
+
 // CREATURES
 foreach ($db->getQuery('SELECT * FROM creatures WHERE visible = ?', array(1)) as $row) {
 	if (empty($row["creature"]))
@@ -72,7 +81,7 @@ foreach ($db->getQuery('SELECT * FROM gyms') as $row) {
 	$icon = $assets . "/images/gyms/" . $row["team"] . ".png";
 
 	$message = '<center style="width: 180px;"><img src="' . e($icon) . '" width="75">'
-		. '<hr/><b>' . e($row["name"]) . '</b><br/>'
+		. '<hr/><b>' . e(cleanMarkerName($row["name"])) . '</b><br/>'
 		. '<hr/>Team : <b>' . e($teamName) . '<hr/></b>'
 		. 'Founded the : <b>' . e(date('d/m/Y', strtotime($row["date"]))) . '</b><br/>'
 		. 'at : <b>' . e(date('h:iA', strtotime($row["date"]))) . '</b><br/>'
@@ -97,7 +106,7 @@ foreach ($db->getQuery('SELECT * FROM libs') as $row) {
 	$icon = $assets . "/images/libs/" . $row["team"] . ".png";
 
 	$message = '<center style="width: 180px;"><img src="' . e($icon) . '" width="75">'
-		. '<hr/><b>' . e($row["name"]) . '</b><br/>'
+		. '<hr/><b>' . e(cleanMarkerName($row["name"])) . '</b><br/>'
 		. '<hr/>Team : <b>' . e($teamName) . '</b>'
 		. '<hr/>Founded the : <b>' . e(date('d/m/Y', strtotime($row["date"]))) . '</b><br/>'
 		. 'at : <b>' . e(date('h:iA', strtotime($row["date"]))) . '</b><br/>'
@@ -155,7 +164,7 @@ foreach ($db->getQuery($SQL) as $row) {
 	$icon = $assets . "/images/stops/" . $row["type"] . ".png";
 
 	$message = '<center style="width: 180px;"><img src="' . e($icon) . '" width="75">'
-		. '<hr/><b>' . e($row["name"]) . '</b>'
+		. '<hr/><b>' . e(cleanMarkerName($row["name"])) . '</b>'
 		. '<hr/>Founded the : <b>' . e(date('d/m/Y', strtotime($row["date"]))) . '</b><br/>'
 		. 'at : <b>' . e(date('h:iA', strtotime($row["date"]))) . '</b><br/>'
 		. 'by : <b>' . e($row["spotter"]) . '</b></center>';
