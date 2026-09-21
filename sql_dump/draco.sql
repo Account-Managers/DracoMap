@@ -13,11 +13,11 @@ SET NAMES utf8mb4;
 -- Database
 -- --------------------------------------------------------
 
-CREATE DATABASE IF NOT EXISTS `dracomap19092026`
+CREATE DATABASE IF NOT EXISTS `draco`
   DEFAULT CHARACTER SET utf8
   COLLATE utf8_unicode_ci;
 
-USE `dracomap19092026`;
+USE `draco`;
 
 -- --------------------------------------------------------
 -- Table: bestiary
@@ -457,7 +457,7 @@ CREATE TABLE `users` (
   `uname` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `upass` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `usergroup` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT '1',
-  `mapCenter` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '40.777,-73.969',
+  `mapCenter` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '40.777,-73.969',
   `mapSize` tinyint(2) NOT NULL DEFAULT 15,
   `hidePilars` tinyint(1) NOT NULL DEFAULT 1,
   `hideObelisks` tinyint(1) NOT NULL DEFAULT 1,

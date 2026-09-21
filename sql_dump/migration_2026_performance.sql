@@ -13,7 +13,3 @@ ALTER TABLE `creatures` ADD KEY `visible_date` (`visible`, `date`);
 
 -- Speed up type filtering (hidePilars / hideObelisks) and date-based portal/roost cleanup.
 ALTER TABLE `stops` ADD KEY `type` (`type`), ADD KEY `date` (`date`);
-
--- user_like.spot_id referenced creatures.spotid (varchar) but was INT,
--- which corrupts/truncates non-numeric spot ids and breaks voting.
-ALTER TABLE `user_like` MODIFY `spot_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL;
